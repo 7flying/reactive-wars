@@ -1,3 +1,9 @@
+# Editor
+*~
+\#*\#
+.\#*
+# syntax checker
+.nul
 # Compiled Object files
 *.slo
 *.lo
@@ -26,3 +32,4 @@
 *.exe
 *.out
 *.app
+reactive-wars
