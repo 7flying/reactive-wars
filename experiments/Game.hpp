@@ -3,7 +3,9 @@
 
 #include <SFML/Graphics.hpp>
 #include <stack>
+#include <map>
 #include "TextureManager.hpp"
+#include "Tile.hpp"
 
 using namespace std;
 using namespace sf;
@@ -15,6 +17,7 @@ class Game
 {
 private:
     void loadTextures();
+    void loadTiles();
 
 public:
 
@@ -29,6 +32,9 @@ public:
     TextureManager texman;
     /** Background image **/
     Sprite background;
+
+    const static int tileSize = 8;
+    map<string, Tile> tileAtlas;
 
     /* Pushes a state into the game state stack.*/
     void pushState(GameState *state);

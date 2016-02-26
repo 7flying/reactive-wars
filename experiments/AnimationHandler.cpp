@@ -30,7 +30,7 @@ void AnimationHandler::update(const float dt)
     float duration = this->animations[this->currentAnim].duration;
     // Check if the animation has progressed to a new frame
     // -> change to next frame
-    if (int((this->time + dt) / duration) > int(this->time / duration)){
+    if (int((this->time + dt) / duration) > int(this->time / duration)) {
         // Get frame number
         int frame = int((this->time + dt) / duration);
         // adjust for loop
