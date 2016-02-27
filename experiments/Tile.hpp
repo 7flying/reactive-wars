@@ -10,12 +10,7 @@ using namespace std;
 
 
 enum class TileType {
-    VOID,
-        PLAIN, FOREST, FLOOR, PILLAR, MOUNTAIN, SEA, DESERT,
-        FORT,
-    // DELETE
-        GRASS, WATER, RESIDENTIAL, COMMERCIAL, INDUSTRIAL, ROAD
-        };
+    VOID, GRASS, FOREST, WATER, RESIDENTIAL, COMMERCIAL, INDUSTRIAL, ROAD};
 
 string tileTypeToStr(TileType type);
 

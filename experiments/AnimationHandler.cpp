@@ -10,6 +10,12 @@ Animation::Animation(unsigned int startFrame, unsigned int endFrame,
     this->duration = duration;
 }
 
+AnimationHandler::AnimationHandler()
+{
+    this->time = 0.0f;
+    this->currentAnim = -1;
+}
+
 AnimationHandler::AnimationHandler(const IntRect &frameSize)
 {
     this->frameSize = frameSize;

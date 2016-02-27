@@ -14,7 +14,7 @@ public:
     float duration;
 
     Animation(unsigned int startFrame, unsigned int endFrame, float duration);
-    unsigned int getLength() { return endFrame - startFrame +1; }
+    unsigned int getLength() { return endFrame - startFrame + 1; }
 };
 
 class AnimationHandler
@@ -33,6 +33,7 @@ public:
     /* Pixel dimensions of each individual frame */
     IntRect frameSize;
 
+    AnimationHandler();
     AnimationHandler(const IntRect &frameSize);
     
     

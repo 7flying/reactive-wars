@@ -14,7 +14,7 @@ class Map
 {
 private:
     void depthfirstsearch(vector<TileType> &whiteList, Vector2i pos, int label,
-                          int type);
+                          int regType);
 
 public:
     unsigned int width, height;

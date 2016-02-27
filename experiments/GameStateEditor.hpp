@@ -3,12 +3,20 @@
 
 #include <SFML/Graphics.hpp>
 #include "GameState.hpp"
+#include "Map.hpp"
+
+
+enum class ActionState { NONE, PANNING };
 
 class GameStateEditor : public GameState
 {
 private:
+    ActionState actionState;
     View gameView;
     View guiView;
+    Map map;
+    Vector2i panningAnchor;
+    float zoomLevel;
 
 public:
 

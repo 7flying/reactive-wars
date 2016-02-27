@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <stack>
 #include <map>
+#include <string>
 #include "TextureManager.hpp"
 #include "Tile.hpp"
 

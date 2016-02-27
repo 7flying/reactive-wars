@@ -1,6 +1,7 @@
 
 PROG=reactive-wars
-SRCS=main.cpp TextureManager.cpp AnimationHandler.cpp Game.cpp GameStateEditor.cpp GameStateStart.cpp
+SRCS=main.cpp TextureManager.cpp AnimationHandler.cpp Game.cpp \
+GameStateEditor.cpp GameStateStart.cpp Tile.cpp Map.cpp
 LIB=/usr/local/SFML-2.3.2/lib
 LINK=-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
