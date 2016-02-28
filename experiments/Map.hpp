@@ -24,6 +24,9 @@ public:
     unsigned int tileSize, numSelected;
     unsigned int numRegions[1];
 
+    // 0 deselected, 1 selected, 2 invalid
+    vector<char> selected;
+
     Map();
     Map(const string &filename, unsigned int width, unsigned int height,
         map<string, Tile> &tileAtlas);
@@ -41,6 +44,10 @@ public:
     /** Update the direction of directional tiles so that they face the correct
       * way. Used to orient roads, pylos, rivers etc */
     void updateDirection(TileType tileType);
+    /** Select the tiles within the bounds **/
+    void select(Vector2i start, Vector2i end, vector<TileType> blacklist);
+    /** Deselect all the tiles **/
+    void clearSelected();
 };
 
 #endif // MAP_HPP

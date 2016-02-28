@@ -6,7 +6,7 @@
 #include "Map.hpp"
 
 
-enum class ActionState { NONE, PANNING };
+enum class ActionState { NONE, PANNING, SELECTING };
 
 class GameStateEditor : public GameState
 {
@@ -17,6 +17,9 @@ private:
     Map map;
     Vector2i panningAnchor;
     float zoomLevel;
+
+    Vector2i selectionStart, selectionEnd;
+    Tile *currentTile;
 
 public:
 

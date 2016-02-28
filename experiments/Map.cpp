@@ -10,6 +10,7 @@ using namespace std;
 
 
 Map::Map() {
+    this->numSelected = 0;
     this->tileSize = 8;
     this->width = 0;
     this->height = 0;
@@ -19,6 +20,7 @@ Map::Map() {
 Map::Map(const string &filename, unsigned int width, unsigned int height,
          map<string, Tile> &tileAtlas)
 {
+    this->numSelected = 0;
     this->tileSize = 8;
     load(filename, width, height, tileAtlas);
 }
@@ -32,10 +34,12 @@ void Map::load(const string &filename, unsigned int width, unsigned int height,
     this->height = height;
 
     for (int pos = 0; pos < this->width * this->height; pos++) {
+        this->resources.push_back(255);
+        this->selected.push_back(0);
+        
         TileType tileType;
         inputFile.read((char*) &tileType, sizeof(int));
-        switch(tileType)
-        {
+        switch(tileType) {
         default:
         case TileType::VOID:
         case TileType::GRASS:
@@ -92,6 +96,13 @@ void Map::draw(RenderWindow &window, float dt)
             pos.x = (x - y) * this->tileSize + this->width * this->tileSize;
             pos.y = (x + y) * this->tileSize * 0.5;
             this->tiles[y * this->width + x].sprite.setPosition(pos);
+            // Change the color if the tile is selected
+            if (this->selected[y * this->width + x])
+                this->tiles[y * this->width + x].sprite.setColor(
+                    Color(0x7d, 0x7d, 0x7d));
+            else
+                this->tiles[y * this->width + x].sprite.setColor(
+                    Color(0xff, 0xff, 0xff));
             // Draw the tile
             this->tiles[y * this->width + x].draw(window, dt);
         }
@@ -219,4 +230,53 @@ void Map::findConnectedRegions(vector<TileType> whitelist, int regType=0)
         }
     }
     this->numRegions[regType] = regions; 
+}
+
+void Map::clearSelected()
+{
+    for (auto &tile : this->selected)
+        tile = 0;
+    this->numSelected = 0;
+}
+
+void Map::select(Vector2i start, Vector2i end, vector<TileType> blacklist)
+{
+    // Swap coordinates if necessary
+    if (end.y < start.y)
+        swap(start.y, end.y);
+    if (end.x < start.x)
+        swap(start.x, end.x);
+    //Clamp in range
+    if (end.x >= this->width)
+        end.x = this->width - 1;
+    else if (end.x < 0)
+        end.x = 0;
+    if (end.y >= this->height)
+        end.y = this->height - 1;
+    else if(end.y < 0)
+            end.y = 0;
+    if (start.x >= this->width)
+       start.x = this->width - 1;
+    else if(start.x < 0)
+        start.x = 0;
+    if (start.y >= this->height)
+        start.y = this->height - 1;
+    else if(start.y < 0)
+        start.y = 0;
+
+    for (int y = start.y; y <= end.y; y++) {
+        for (int x = start.x; x <= end.x; x++) {
+            // Check if the tile type is in the blacklist. If it is mark it as
+            // invalidad, otherwise select it
+            this->selected[y * this->width + x] = 1;
+            ++this->numSelected;
+            for (auto type : blacklist) {
+                if (this->tiles[y * this->width + x].tileType == type) {
+                    this->selected[y * this->width + x] = 2;
+                    --this->numSelected;
+                    break;
+                }
+            }
+        }
+    }
 }
