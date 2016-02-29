@@ -4,10 +4,11 @@
 
 Tile::Tile() {}
 
-Tile::Tile(const unsigned int tileSize, const unsigned int height, sf::Texture& texture,
-        const std::vector<Animation>& animations,
-        const TileType tileType, const unsigned int cost, const unsigned int maxPopPerLevel,
-        const unsigned int maxLevels)
+Tile::Tile(const unsigned int tileSize, const unsigned int height,
+           Texture &texture, const vector<Animation> &animations,
+           const TileType tileType, const unsigned int cost,
+           const unsigned int maxPopPerLevel,
+           const unsigned int maxLevels)
 {
     this->tileType = tileType;
     this->tileVariant = 0;
