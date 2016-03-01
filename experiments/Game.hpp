@@ -7,6 +7,7 @@
 #include <string>
 #include "TextureManager.hpp"
 #include "Tile.hpp"
+#include "Gui.hpp"
 
 using namespace std;
 using namespace sf;
@@ -19,6 +20,8 @@ class Game
 private:
     void loadTextures();
     void loadTiles();
+    void loadStylesheets();
+    void loadFonts();
 
 public:
 
@@ -36,6 +39,9 @@ public:
 
     const static int tileSize = 8;
     map<string, Tile> tileAtlas;
+
+    map<string, GuiStyle> stylesheets;
+    map<string, Font> fonts;
 
     /* Pushes a state into the game state stack.*/
     void pushState(GameState *state);
