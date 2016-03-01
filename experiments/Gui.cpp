@@ -1,5 +1,4 @@
 #include "Gui.hpp"
-#include <SFML/Graphics.hpp>
 
 using namespace sf;
 
@@ -81,7 +80,7 @@ int Gui::getEntry(const Vector2f mousePos)
 
 void Gui::setEntryText(int entry, string text)
 {
-    if (entry >= this->entries.size() || entry < 0)
+    if (entry >= (int) this->entries.size() || entry < 0)
         return;
     this->entries[entry].text.setString(text);
 }

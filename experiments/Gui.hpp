@@ -9,7 +9,6 @@
 using namespace std;
 using namespace sf;
 
-
 class GuiStyle
 {
 public:
