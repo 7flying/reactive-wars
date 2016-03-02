@@ -2,6 +2,7 @@
 #include <vector>
 #include "AnimationHandler.hpp"
 
+
 Animation::Animation(unsigned int startFrame, unsigned int endFrame,
                      float duration)
 {

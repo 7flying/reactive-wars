@@ -1,14 +1,19 @@
-#include <stack>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
+#include <stack>
 #include "Game.hpp"
 #include "GameState.hpp"
+#include "TextureManager.hpp"
+#include "AnimationHandler.hpp"
+#include "Tile.hpp"
 
 
 Game::Game()
 {
     this->loadTextures();
     this->loadTiles();
+    this->loadFonts();
+    this->loadStylesheets();
     this->window.create(VideoMode(800, 600), "Reactive Wars");
     this->window.setFramerateLimit(60);
     this->background.setTexture(this->texman.getRef("background"));

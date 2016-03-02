@@ -88,7 +88,7 @@ void GameStateEditor::handleInput()
                 }
             } else if (event.mouseButton.button == Mouse::Left) {
                 // select map tile
-                if(this->actionState != ActionState::SELECTING) {
+                if (this->actionState != ActionState::SELECTING) {
                     this->actionState = ActionState::SELECTING;
                     sf::Vector2f pos = this->game->window.mapPixelToCoords(
                         Mouse::getPosition(this->game->window), this->gameView);
@@ -98,8 +98,7 @@ void GameStateEditor::handleInput()
                         (2 * this->map.tileSize) + this->map.width * 0.5 + 0.5;
                 } else if(event.mouseButton.button == sf::Mouse::Right) {
                     /* Stop selecting */
-                    if(this->actionState == ActionState::SELECTING)
-                    {
+                    if (this->actionState == ActionState::SELECTING) {
                         this->actionState = ActionState::NONE;
                         this->map.clearSelected();
                     }
@@ -137,6 +136,7 @@ void GameStateEditor::handleInput()
         }
         case Event::Resized:{
             gameView.setSize(event.size.width, event.size.height);
+            gameView.zoom(zoomLevel);
             guiView.setSize(event.size.width, event.size.height);
             this->game->background.setPosition(
                 this->game->window.mapPixelToCoords(Vector2i(0, 0),

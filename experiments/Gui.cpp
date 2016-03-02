@@ -27,6 +27,7 @@ Gui::Gui(Vector2f dimensions, int padding, bool horizontal,
          GuiStyle &style, vector<pair<string, string>> entries)
 {
     this->visible = false;
+    this->horizontal = horizontal;
     this->style = style;
     this->dimensions = dimensions;
     this->padding = padding;
@@ -62,7 +63,7 @@ int Gui::getEntry(const Vector2f mousePos)
     if (!this->visible)
         return -1;
 
-    for (int i = 0; this->entries.size(); i++) {
+    for (int i = 0; i < (int) this->entries.size(); i++) {
         // Translate point to use the entry's local coordinates
         Vector2f point = mousePos;
         point += this->entries[i].shape.getOrigin();

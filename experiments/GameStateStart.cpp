@@ -51,7 +51,7 @@ void GameStateStart::handleInput()
     while (this->game->window.pollEvent(event)) {
         switch(event.type) {
         case Event::Closed:{
-            game->window.close();
+            this->game->window.close();
             break;
         }
         case Event::Resized:{
@@ -59,17 +59,17 @@ void GameStateStart::handleInput()
             this->game->background.setPosition(
                 // Convert a position in window coordinates to its equivalent
                 // position in world coordinates usint the current view
-                this->game->window.mapPixelToCoords(Vector2i(0, 0)));
-            this->game->background.setScale(
-                float(event.size.width) / float(
-                    this->game->background.getTexture()->getSize().x),
-                float(event.size.width) / float(
-                    this->game->background.getTexture()->getSize().y));
+                this->game->window.mapPixelToCoords(Vector2i(0, 0), this->view));
             // menu
             Vector2f pos = Vector2f(event.size.width, event.size.height);
             pos *= 0.5f;
             pos = this->game->window.mapPixelToCoords(Vector2i(pos), this->view);
             this->guiSystem.at("menu").setPosition(pos);
+            this->game->background.setScale(
+                float(event.size.width) / float(
+                    this->game->background.getTexture()->getSize().x),
+                float(event.size.height) / float(
+                    this->game->background.getTexture()->getSize().y));
             break;
         }
         case Event::MouseMoved:{
