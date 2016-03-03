@@ -4,7 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include "GameState.hpp"
 #include "Map.hpp"
-
+#include "City.hpp"
+#include "Gui.hpp"
 
 enum class ActionState { NONE, PANNING, SELECTING };
 
@@ -14,12 +15,14 @@ private:
     ActionState actionState;
     View gameView;
     View guiView;
-    Map map;
+    //Map map;
+    City city;
     Vector2i panningAnchor;
     float zoomLevel;
 
     Vector2i selectionStart, selectionEnd;
     Tile *currentTile;
+    map<string, Gui> guiSystem;
 
 public:
 
