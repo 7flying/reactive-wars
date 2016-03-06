@@ -6,7 +6,7 @@
 
 /* Base class for all the game states. */
 class GameState {
-
+    
 public:
     Game *game;
 
