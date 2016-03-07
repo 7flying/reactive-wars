@@ -1,12 +1,16 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include "Game.hpp"
+#include "Else.hpp"
 
 
 Game::Game()
 {
     this->window.create(VideoMode(800, 600), "Reactive Wars");
     this->window.setFramerateLimit(60);
+    this->loadFonts();
+    this->loadTextures();
+    this->background.setTexture(this->texman.getRef("background-rainbow"));
 }
 
 Game::~Game()
@@ -58,5 +62,12 @@ void Game::gameLoop()
 
 void Game::loadFonts()
 {
-    
+    this->fontman.loadFont("ds-bios", "media" + getFileSeparator()
+                           + "Nintendo-DS-BIOS.ttf");
+}
+
+void Game::loadTextures()
+{
+    this->texman.loadTexture("background-rainbow", "media" + getFileSeparator()
+                             + "rainbow-glitch.png");
 }

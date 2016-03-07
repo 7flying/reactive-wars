@@ -1,6 +1,7 @@
 
 PROG=reactive-wars
-SRCS=main.cpp Character.cpp CharacterClass.cpp Stats.cpp Mage.cpp
+SRCS=main.cpp Character.cpp CharacterClass.cpp Else.cpp FontManager.cpp \
+	Game.cpp GameStateInit.cpp Mage.cpp Stats.cpp
 LIB=/usr/local/SFML-2.3.2/lib
 LINK=-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 

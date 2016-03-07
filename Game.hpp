@@ -19,6 +19,8 @@ private:
 
     /* Loads the required fonts for the game.*/
     void loadFonts();
+    /* Loads the required textures.*/
+    void loadTextures();
 
 public:
     Game();
@@ -34,7 +36,7 @@ public:
     FontManager fontman;
 
     // -- Assets --
-
+    Sprite background;
 
     /* Pushes a state into the game state stack.*/
     void pushState(GameState *state);
