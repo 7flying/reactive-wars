@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include "Game.hpp"
+#include "GameState.hpp"
 #include "Else.hpp"
 
 
