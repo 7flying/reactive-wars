@@ -2,7 +2,6 @@
 #include <SFML/Graphics.hpp>
 
 
-
 FontManager::FontManager(){}
 
 void FontManager::loadFont(const string &name, const string &filename)
