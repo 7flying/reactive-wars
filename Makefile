@@ -1,13 +1,20 @@
 
 PROG=reactive-wars
 SRCS=main.cpp Character.cpp CharacterClass.cpp Else.cpp FontManager.cpp \
-	TextureManager.cpp Game.cpp GameStateInit.cpp Mage.cpp Stats.cpp
+	TextureManager.cpp AnimationHandler.cpp Tile.cpp Map.cpp \
+	Game.cpp GameStateInit.cpp GameStateLevel.cpp Mage.cpp Stats.cpp
 LIB=/usr/local/SFML-2.3.2/lib
 LINK=-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+ARGS_DEBUG=-std=c++11 -g
+ARGS_RELEASE=-std=c++11 -O3
 
 all:
 	rm -f $(PROG)
-	g++ $(SRCS) -o $(PROG) -std=c++11 -O3 -L -L$(LIB) $(LINK)
+	g++ $(SRCS) -o $(PROG) $(ARGS_DEBUG) -L -L$(LIB) $(LINK)
+
+release:
+	rm -f $(PROG)
+	g++ $(SRCS) -o $(PROG) $(ARGS_RELEASE) -L -L$(LIB) $(LINK)
 
 clean:
 	rm -f *~

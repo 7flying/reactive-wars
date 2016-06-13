@@ -1,6 +1,4 @@
-#include <SFML/Graphics.hpp>
 #include "GameStateInit.hpp"
-#include "GameStateLevel.hpp"
 
 
 GameStateInit::GameStateInit(Game *game)
@@ -35,7 +33,7 @@ void GameStateInit::handleInput()
         case Event::KeyPressed:
             if (event.key.code == Keyboard::Escape)
                 this->game->window.close();
-            else if (event.key.code == Keyboard::Insert) // TODO check Insert
+            else if (event.key.code == Keyboard::Space) // TODO check Insert
                 this->loadGame();
                                                 
             break;

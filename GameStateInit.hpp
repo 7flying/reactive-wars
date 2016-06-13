@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include "Game.hpp"
 #include "GameState.hpp"
+#include "GameStateLevel.hpp"
+
 
 using namespace std;
 

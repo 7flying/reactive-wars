@@ -6,6 +6,8 @@
 #include <map>
 #include "TextureManager.hpp"
 #include "FontManager.hpp"
+#include "Tile.hpp"
+
 
 using namespace std;
 using namespace sf;
@@ -21,6 +23,8 @@ private:
     void loadFonts();
     /* Loads the required textures.*/
     void loadTextures();
+    /* Loads Tiles */
+    void loadTiles();
 
 public:
     Game();
@@ -37,6 +41,11 @@ public:
 
     // -- Assets --
     Sprite background;
+
+    // -- Tiles --
+    const static int tileSize = 8;
+    map<string, Tile> tileAtlas;
+        
 
     /* Pushes a state into the game state stack.*/
     void pushState(GameState *state);

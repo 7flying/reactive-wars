@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include "Game.hpp"
 #include "GameState.hpp"
+#include "Map.hpp"
+
 
 using namespace std;
 
@@ -11,7 +13,8 @@ using namespace std;
 class GameStateLevel : public GameState {
 
 private:
-    View view;
+    View gameView;
+    Map map;
 
 public:
     GameStateLevel(Game *game);
