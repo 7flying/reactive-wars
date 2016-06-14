@@ -26,7 +26,7 @@ public:
     PerlinNoise();
     /** Given an 2D array of widht x heigh (perlin) generates Perlin Noise **/
     void generatePerlinNoise(int width, int height, int octaveCount,
-                             float amplitude, float **perlin);
+                             float persistance, float **perlin);
 
     /** Test implementation **/
     void test();

@@ -17,7 +17,65 @@ Map::Map(const string &filename, unsigned int width, unsigned int height,
 {
     this->numSelected = 0;
     this->tileSize = 8;
-    load(filename, width, height, tileAtlas);
+    //load(filename, width, height, tileAtlas);
+    proceduralMap(width, height, tileAtlas);
+}
+
+
+void Map::proceduralMap(unsigned int width, unsigned int height,
+                        map<string, Tile> &tileAtlas)
+{
+    this->width = width;
+    this->height = height;
+    PerlinNoise pnoise;
+    // Generate array for perlin noise
+    float ** a_pnoise = new float*[height];
+    for (unsigned int i = 0; i < height; i++)
+        a_pnoise[i] = new float[width];
+    pnoise.generatePerlinNoise(width, height, 6, 0.7f, a_pnoise);
+    // Map each value to a tile type
+    for (int i = 0; i < this->width; i++) {
+        for (int j = 0; j < this->height; j++) {
+            this->resources.push_back(255);
+            this->selected.push_back(0);
+            int selected = floor(a_pnoise[i][j] * (TILE_NUM - 1));
+            switch(selected) {
+            default:
+            case 0:
+                this->tiles.push_back(tileAtlas.at("grass"));
+                break;
+            case 1:
+                this->tiles.push_back(tileAtlas.at("forest"));
+                break;
+            case 2:
+                this->tiles.push_back(tileAtlas.at("water"));
+                break;
+            case 3:
+                this->tiles.push_back(tileAtlas.at("residential"));
+                break;
+            case 4:
+                this->tiles.push_back(tileAtlas.at("commercial"));
+                break;
+            case 5:
+                this->tiles.push_back(tileAtlas.at("industrial"));
+                break;
+            case 6:
+                this->tiles.push_back(tileAtlas.at("road"));
+                break;
+            }
+        }
+        Tile &tile = this->tiles.back();
+        tile.tileVariant = 1;
+        tile.regions[0] = 0; // ein?
+        tile.population = 3;
+        tile.storedGoods = 3.0f;
+    }
+
+    // Clean array
+    for (unsigned int i = 0; i < height; i++)
+        delete[] a_pnoise[i];
+    delete[] a_pnoise;
+
 }
 
 void Map::load(const string &filename, unsigned int width, unsigned int height,
@@ -31,9 +89,10 @@ void Map::load(const string &filename, unsigned int width, unsigned int height,
     for (int pos = 0; (unsigned) pos < this->width * this->height; pos++) {
         this->resources.push_back(255);
         this->selected.push_back(0);
-        
+        cout << "position: " << pos << endl;
         TileType tileType;
         inputFile.read((char*) &tileType, sizeof(int));
+        cout << "Tile type: " << tileTypeToStr(tileType) << endl;
         switch(tileType) {
         default:
         case TileType::VOID:
@@ -249,9 +308,9 @@ void Map::select(Vector2i start, Vector2i end, vector<TileType> blacklist)
     if ((unsigned) end.y >= this->height)
         end.y = this->height - 1;
     else if(end.y < 0)
-            end.y = 0;
+        end.y = 0;
     if ((unsigned) start.x >= this->width)
-       start.x = this->width - 1;
+        start.x = this->width - 1;
     else if(start.x < 0)
         start.x = 0;
     if ((unsigned) start.y >= this->height)

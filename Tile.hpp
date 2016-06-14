@@ -6,9 +6,9 @@
 #include <string>
 #include "AnimationHandler.hpp"
 
+#define TILE_NUM 7
 
 using namespace std;
-
 
 enum class TileType {
     VOID, GRASS, FOREST, WATER, RESIDENTIAL, COMMERCIAL, INDUSTRIAL, ROAD};

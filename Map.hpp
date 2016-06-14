@@ -6,7 +6,10 @@
 #include <map>
 #include <vector>
 #include <fstream>
+#include <iostream> // just cout oriented testing
+#include <math.h>
 #include "Tile.hpp"
+#include "PerlinNoise.hpp"
 
 
 using namespace std;
@@ -31,7 +34,11 @@ public:
     Map();
     Map(const string &filename, unsigned int width, unsigned int height,
         map<string, Tile> &tileAtlas);
-    
+
+
+    /** Generates a map using Perlin Noise **/
+    void proceduralMap(unsigned int width, unsigned int height,
+                       map<std::string, Tile> &tileAtlas);
     /** Load map from disk **/
     void load(const string &filename, unsigned int width, unsigned int height,
               map<std::string, Tile> &tileAtlas);
