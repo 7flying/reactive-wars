@@ -3,7 +3,7 @@
 
 PerlinNoise::PerlinNoise()
 {
-    this->rng.seed(0); //std::random_device()()
+    this->rng.seed(std::random_device()());
 }
 
 void
@@ -23,13 +23,8 @@ void
 PerlinNoise::generateSmoothNoise(int width, int height, float **base, int octave,
                                  float **smooth)
 {
-    /*
-    float **arr = new float*[height];
-    for (int i = 0; i < height; i++)
-        arr[i] = new float[width];
-    */
-
-    int samplePeriod = 1 << octave;
+    //int samplePeriod = 1 << octave;
+    int samplePeriod = pow(2, octave);
     float sampleFrequency = 1.0f / samplePeriod;
     for (int i = 0; i < width; i++) {
         // horizontal sampling indices
@@ -54,12 +49,6 @@ PerlinNoise::generateSmoothNoise(int width, int height, float **base, int octave
             smooth[i][j] = interpolate(top, bot, verticalBlend);
         }
     }
-    /*
-    // Just for testing
-    for (int i = 0; i < height; i++)
-        delete[] arr[i];
-    delete[] arr;
-    */
 }
 
 float PerlinNoise::interpolate(float x1, float x2, float alpha)
@@ -69,8 +58,79 @@ float PerlinNoise::interpolate(float x1, float x2, float alpha)
 }
 
 void
-PerlinNoise::generatePerlinNoise(int width, int height, float **base,
-                                 int octaveCount, float **perlin)
+PerlinNoise::generatePerlinNoise(int width, int height, int octaveCount,
+                                 float amplitude, float **perlin)
 {
+    // Generate base white noise
+    float **base = new float*[height];
+    for (int i = 0; i < height; i++)
+        base[i] = new float[width];
+    this->generateWhiteNoise(width, height, base);
+
+    float ***smoothNoise = new float**[octaveCount];
+    float persistance = 0.5;
+
+    for (int i = 0; i < octaveCount; i++) {
+        smoothNoise[i] = new float*[height];
+        for (int j = 0; j < height; j++)
+            smoothNoise[i][j] = new float[width];
+        this->generateSmoothNoise(width, height, base, i, smoothNoise[i]);
+    }
+
+    float totalAmplitude = 0.0f;
+    // blend noise
+    for (int octave = octaveCount - 1; octave >= 0; octave--) {
+        amplitude *= persistance;
+        totalAmplitude += amplitude;
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                perlin[i][j] += smoothNoise[octave][i][j] * amplitude;
+            }
+        }
+    }
+    // normalise
+    for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
+            perlin[i][j] /= totalAmplitude;
+        }
+    }
+    // Clean up base and smooth noise for each octave
+    for (int i = 0; i < height; i++) {
+        delete[] base[i];
+    }
+    delete[] base;
+    // Tridimensional
+    for (int i = 0; i < octaveCount; i++) {
+        for (int j = 0; j < height; j++)
+            delete[] smoothNoise[i][j];
+        delete[] smoothNoise[i];
+    }
+    delete[] smoothNoise;
+}
+
+
+void PerlinNoise::test()
+{
+    int width = 32;
+    int height = 32;
     
+    PerlinNoise perlin;
+    float **ret = new float*[height];
+    for (int i = 0; i < height; i++)
+        ret[i] = new float[width];
+
+    perlin.generatePerlinNoise(width, height, 2, 1.0f, ret);
+    std::cout << "Generating Perlin Noise" << std::endl << std::endl;
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            std::cout << ret[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+    // Cleanup
+    // free base & smooth
+    for (int i = 0; i < height; i++)
+        delete[] ret[i];
+    delete[] ret;
+
 }
