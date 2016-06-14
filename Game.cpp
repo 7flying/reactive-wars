@@ -73,16 +73,25 @@ void Game::loadFonts()
 
 void Game::loadTextures()
 {
-    this->texman.loadTexture("background-rainbow", "media" + getFileSeparator()
-                             + "rainbow-glitch.png");
+    //this->texman.loadTexture("background-rainbow", "media" + getFileSeparator()
+    //                         + "rainbow-glitch.png");
     this->texman.loadTexture("background", "media/background.png");
     this->texman.loadTexture("grass", "media/grass.png");
-    this->texman.loadTexture("forest", "media/forest.png");
+    this->texman.loadTexture("grass1", "media/grass1.png");
+    this->texman.loadTexture("grass2", "media/grass2.png");
+    this->texman.loadTexture("grass3", "media/grass3.png");
+    this->texman.loadTexture("moun", "media/moun.png");
+    this->texman.loadTexture("moun1", "media/moun1.png");
     this->texman.loadTexture("water", "media/water.png");
-    this->texman.loadTexture("residential", "media/residential.png");
-    this->texman.loadTexture("commercial", "media/commercial.png");
-    this->texman.loadTexture("industrial", "media/industrial.png");
-    this->texman.loadTexture("road", "media/road.png");
+    this->texman.loadTexture("water1", "media/water1.png");
+    this->texman.loadTexture("water2", "media/water2.png");
+
+
+    /*this->texman.loadTexture("residential", "media/residential.png");
+      this->texman.loadTexture("commercial", "media/commercial.png");
+      this->texman.loadTexture("industrial", "media/industrial.png");
+      this->texman.loadTexture("road", "media/road.png");
+    */
 }
 
 void Game::loadTiles()
@@ -91,33 +100,31 @@ void Game::loadTiles()
     this->tileAtlas["grass"] = Tile(this->tileSize, 1, texman.getRef("grass"),
                                     { staticAnim },
                                     TileType::GRASS, 50, 0, 1);
-    tileAtlas["forest"] = Tile(this->tileSize, 1, texman.getRef("forest"),
-                               { staticAnim },
-                               TileType::FOREST, 100, 0, 1);
-    tileAtlas["water"] = Tile(this->tileSize, 1, texman.getRef("water"),
-                              { Animation(0, 3, 0.5f), Animation(0, 3, 0.5f),
-                                      Animation(0, 3, 0.5f) },
-                              TileType::WATER, 0, 0, 1);
-    tileAtlas["residential"] = Tile(this->tileSize, 2,
-                                    texman.getRef("residential"),
-                                    { staticAnim, staticAnim, staticAnim,
-                                            staticAnim, staticAnim,
-                                            staticAnim },
-                                    TileType::RESIDENTIAL, 300, 50, 6);
-    tileAtlas["commercial"] = Tile(this->tileSize, 2,
-                                   texman.getRef("commercial"),
-                                   { staticAnim, staticAnim, staticAnim,
-                                           staticAnim},
-                                   TileType::COMMERCIAL, 300, 50, 4);
-    tileAtlas["industrial"] = Tile(this->tileSize, 2,
-                                   texman.getRef("industrial"),
-                                   { staticAnim, staticAnim, staticAnim,
-                                           staticAnim },
-                                   TileType::INDUSTRIAL, 300, 50, 4);
-    tileAtlas["road"] = Tile(this->tileSize, 1, texman.getRef("road"),
-                             { staticAnim, staticAnim, staticAnim, staticAnim,
-                                     staticAnim, staticAnim, staticAnim,
-                                     staticAnim, staticAnim, staticAnim,
-                                     staticAnim },
-                             TileType::ROAD, 100, 0, 1);
+    this->tileAtlas["grass1"] = Tile(this->tileSize, 1, texman.getRef("grass1"),
+                                     { staticAnim },
+                                     TileType::GRASS1, 50, 0, 1);
+    this->tileAtlas["grass2"] = Tile(this->tileSize, 1, texman.getRef("grass2"),
+                                     { staticAnim },
+                                     TileType::GRASS2, 50, 0, 1);
+    this->tileAtlas["grass3"] = Tile(this->tileSize, 1, texman.getRef("grass3"),
+                                     { staticAnim },
+                                     TileType::GRASS3, 50, 0, 1);
+    this->tileAtlas["moun"] = Tile(this->tileSize, 1, texman.getRef("moun"),
+                                   { staticAnim },
+                                   TileType::MOUNTAIN, 100, 0, 1);
+    this->tileAtlas["moun1"] = Tile(this->tileSize, 1, texman.getRef("moun1"),
+                                    { staticAnim },
+                                    TileType::MOUNTAIN1, 100, 0, 1);
+    this->tileAtlas["water"] = Tile(this->tileSize, 1, texman.getRef("water"),
+                                    { Animation(0, 3, 0.5f), Animation(0, 3, 0.5f),
+                                            Animation(0, 3, 0.5f) },
+                                    TileType::WATER, 0, 0, 1);
+    this->tileAtlas["water1"] = Tile(this->tileSize, 1, texman.getRef("water1"),
+                                    { Animation(0, 3, 0.5f), Animation(0, 3, 0.5f),
+                                            Animation(0, 3, 0.5f) },
+                                    TileType::WATER1, 0, 0, 1);
+    this->tileAtlas["water2"] = Tile(this->tileSize, 1, texman.getRef("water2"),
+                                    { Animation(0, 3, 0.5f), Animation(0, 3, 0.5f),
+                                            Animation(0, 3, 0.5f) },
+                                    TileType::WATER2, 0, 0, 1);
 }

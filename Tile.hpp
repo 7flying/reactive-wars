@@ -6,12 +6,15 @@
 #include <string>
 #include "AnimationHandler.hpp"
 
-#define TILE_NUM 7
+#define TILE_NUM 9
 
 using namespace std;
 
 enum class TileType {
-    VOID, GRASS, FOREST, WATER, RESIDENTIAL, COMMERCIAL, INDUSTRIAL, ROAD};
+    VOID, GRASS, GRASS1, GRASS2, GRASS3, MOUNTAIN, MOUNTAIN1, WATER, WATER1,
+        WATER2,
+    // unused:
+        FOREST, RESIDENTIAL, COMMERCIAL, INDUSTRIAL, ROAD};
 
 string tileTypeToStr(TileType type);
 

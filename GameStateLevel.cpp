@@ -40,6 +40,7 @@ void GameStateLevel::handleInput()
                 this->game->window.close();
             else if (event.key.code == Keyboard::R) {
                 // Reload map
+                this->map.proceduralMap(64, 64, this->game->tileAtlas);
             }
             break;
         default:

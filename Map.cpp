@@ -1,6 +1,5 @@
 #include "Map.hpp"
 
-
 using namespace std;
 
 
@@ -21,18 +20,18 @@ Map::Map(const string &filename, unsigned int width, unsigned int height,
     proceduralMap(width, height, tileAtlas);
 }
 
-
 void Map::proceduralMap(unsigned int width, unsigned int height,
                         map<string, Tile> &tileAtlas)
 {
     this->width = width;
     this->height = height;
+    this->tiles.clear();
     PerlinNoise pnoise;
     // Generate array for perlin noise
     float ** a_pnoise = new float*[height];
     for (unsigned int i = 0; i < height; i++)
         a_pnoise[i] = new float[width];
-    pnoise.generatePerlinNoise(width, height, 6, 0.7f, a_pnoise);
+    pnoise.generatePerlinNoise(width, height, 6, 1.0f, a_pnoise);
     // Map each value to a tile type
     for (int i = 0; i < this->width; i++) {
         for (int j = 0; j < this->height; j++) {
@@ -40,27 +39,32 @@ void Map::proceduralMap(unsigned int width, unsigned int height,
             this->selected.push_back(0);
             int selected = floor(a_pnoise[i][j] * (TILE_NUM - 1));
             switch(selected) {
-            default:
-            case 0:
-                this->tiles.push_back(tileAtlas.at("grass"));
-                break;
             case 1:
-                this->tiles.push_back(tileAtlas.at("forest"));
+                this->tiles.push_back(tileAtlas.at("moun1"));
                 break;
             case 2:
-                this->tiles.push_back(tileAtlas.at("water"));
+                this->tiles.push_back(tileAtlas.at("grass2"));
                 break;
             case 3:
-                this->tiles.push_back(tileAtlas.at("residential"));
+                this->tiles.push_back(tileAtlas.at("grass1"));
                 break;
             case 4:
-                this->tiles.push_back(tileAtlas.at("commercial"));
+                this->tiles.push_back(tileAtlas.at("grass"));
                 break;
             case 5:
-                this->tiles.push_back(tileAtlas.at("industrial"));
+                this->tiles.push_back(tileAtlas.at("moun"));
                 break;
             case 6:
-                this->tiles.push_back(tileAtlas.at("road"));
+                this->tiles.push_back(tileAtlas.at("water"));
+                break;
+            case 7:
+                this->tiles.push_back(tileAtlas.at("water1"));
+                break;
+            case 8:
+                this->tiles.push_back(tileAtlas.at("water2"));
+                break;
+            default:
+                this->tiles.push_back(tileAtlas.at("grass3"));
                 break;
             }
         }

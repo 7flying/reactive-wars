@@ -59,7 +59,7 @@ float PerlinNoise::interpolate(float x1, float x2, float alpha)
 
 void
 PerlinNoise::generatePerlinNoise(int width, int height, int octaveCount,
-                                 float persistence, float **perlin)
+                                 float persistance, float **perlin)
 {
     // Generate base white noise
     float **base = new float*[height];
@@ -68,7 +68,6 @@ PerlinNoise::generatePerlinNoise(int width, int height, int octaveCount,
     this->generateWhiteNoise(width, height, base);
 
     float ***smoothNoise = new float**[octaveCount];
-    float persistance = 0.5;
 
     for (int i = 0; i < octaveCount; i++) {
         smoothNoise[i] = new float*[height];
