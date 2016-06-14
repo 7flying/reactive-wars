@@ -29,5 +29,21 @@ void GameStateLevel::update(const float dt)
 
 void GameStateLevel::handleInput()
 {
-    
+    Event event;
+    while (this->game->window.pollEvent(event)) {
+        switch (event.type) {
+        case Event::Closed:
+            this->game->window.close();
+            break;
+        case Event::KeyPressed:
+            if (event.key.code == Keyboard::Escape)
+                this->game->window.close();
+            else if (event.key.code == Keyboard::R) {
+                // Reload map
+            }
+            break;
+        default:
+            break;
+        }
+    }
 }
