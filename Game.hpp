@@ -42,10 +42,12 @@ public:
     // -- Assets --
     Sprite background;
 
-    // -- Tiles --
+    // -- Map Tiles --
     const static int tileSize = 8;
     map<string, Tile> tileAtlas;
-        
+
+    // -- Unit Tiles --
+    const static int unitTileSize = 8;
 
     /* Pushes a state into the game state stack.*/
     void pushState(GameState *state);

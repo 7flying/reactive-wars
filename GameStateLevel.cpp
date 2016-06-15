@@ -11,7 +11,7 @@ GameStateLevel::GameStateLevel(Game *game)
     this->gameView.setCenter(pos);
     this->guiView.setCenter(pos);
 
-    this->map = Map("city_map.dat", 64, 64, game->tileAtlas);
+    this->map = Map("city_map.dat", Map::WIDTH, Map::HEIGHT, game->tileAtlas);
 
     // initialise zoom to 1
     this->zoomLevel = 1.0f;
@@ -53,7 +53,8 @@ void GameStateLevel::handleInput()
                 this->game->window.close();
             else if (event.key.code == Keyboard::R) {
                 // Reload map
-                this->map.proceduralMap(64, 64, this->game->tileAtlas);
+                this->map.proceduralMap(Map::WIDTH, Map::HEIGHT,
+                                        this->game->tileAtlas);
             }
             break;
         case Event::MouseMoved:

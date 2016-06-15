@@ -86,7 +86,7 @@ void Game::loadTextures()
     this->texman.loadTexture("water1", "media/water1.png");
     this->texman.loadTexture("water2", "media/water2.png");
 
-
+    this->texman.loadTexture("red-soldier", "media/red-soldier.png");
     /*this->texman.loadTexture("residential", "media/residential.png");
       this->texman.loadTexture("commercial", "media/commercial.png");
       this->texman.loadTexture("industrial", "media/industrial.png");
@@ -99,32 +99,41 @@ void Game::loadTiles()
     Animation staticAnim(0, 0, 1.0f);
     this->tileAtlas["grass"] = Tile(this->tileSize, 1, texman.getRef("grass"),
                                     { staticAnim },
-                                    TileType::GRASS, 50, 0, 1);
+                                    TileType::GRASS);
     this->tileAtlas["grass1"] = Tile(this->tileSize, 1, texman.getRef("grass1"),
                                      { staticAnim },
-                                     TileType::GRASS1, 50, 0, 1);
+                                     TileType::GRASS1);
     this->tileAtlas["grass2"] = Tile(this->tileSize, 1, texman.getRef("grass2"),
                                      { staticAnim },
-                                     TileType::GRASS2, 50, 0, 1);
+                                     TileType::GRASS2);
     this->tileAtlas["grass3"] = Tile(this->tileSize, 1, texman.getRef("grass3"),
                                      { staticAnim },
-                                     TileType::GRASS3, 50, 0, 1);
+                                     TileType::GRASS3);
     this->tileAtlas["moun"] = Tile(this->tileSize, 1, texman.getRef("moun"),
                                    { staticAnim },
-                                   TileType::MOUNTAIN, 100, 0, 1);
+                                   TileType::MOUNTAIN);
     this->tileAtlas["moun1"] = Tile(this->tileSize, 1, texman.getRef("moun1"),
                                     { staticAnim },
-                                    TileType::MOUNTAIN1, 100, 0, 1);
+                                    TileType::MOUNTAIN1);
     this->tileAtlas["water"] = Tile(this->tileSize, 1, texman.getRef("water"),
-                                    { Animation(0, 3, 0.5f), Animation(0, 3, 0.5f),
+                                    { Animation(0, 3, 0.5f),
+                                            Animation(0, 3, 0.5f),
                                             Animation(0, 3, 0.5f) },
-                                    TileType::WATER, 0, 0, 1);
+                                    TileType::WATER);
     this->tileAtlas["water1"] = Tile(this->tileSize, 1, texman.getRef("water1"),
-                                    { Animation(0, 3, 0.5f), Animation(0, 3, 0.5f),
-                                            Animation(0, 3, 0.5f) },
-                                    TileType::WATER1, 0, 0, 1);
+                                     { Animation(0, 3, 0.5f),
+                                             Animation(0, 3, 0.5f),
+                                             Animation(0, 3, 0.5f) },
+                                     TileType::WATER1);
     this->tileAtlas["water2"] = Tile(this->tileSize, 1, texman.getRef("water2"),
-                                    { Animation(0, 3, 0.5f), Animation(0, 3, 0.5f),
-                                            Animation(0, 3, 0.5f) },
-                                    TileType::WATER2, 0, 0, 1);
+                                     { Animation(0, 3, 0.5f),
+                                             Animation(0, 3, 0.5f),
+                                             Animation(0, 3, 0.5f) },
+                                     TileType::WATER2);
+    this->tileAtlas["red-soldier"] = Tile(this->unitTileSize, 1,
+                                          texman.getRef("red-soldier"),
+                                          { Animation(0, 3, 0.5f),
+                                                  Animation(0, 3, 0.5f),
+                                                  Animation(0, 3, 0.5f)},
+                                          TileType::REDSOLDIER);
 }

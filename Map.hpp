@@ -16,14 +16,20 @@ using namespace std;
 
 
 class Map {
+
 private:
     void depthfirstsearch(vector<TileType> &whiteList, Vector2i pos, int label,
                           int regType);
 
 public:
+
+    static const int WIDTH = 64;
+    static const int HEIGHT = 64;
+    
     unsigned int width, height;
     vector<Tile> tiles;
     vector<int> resources;
+    vector<Tile> units;
 
     unsigned int tileSize, numSelected;
     unsigned int numRegions[1];

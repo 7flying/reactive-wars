@@ -19,6 +19,9 @@ Map::Map(const string &filename, unsigned int width, unsigned int height,
     this->width = width;
     this->height = height;
     proceduralMap(width, height, tileAtlas);
+
+    this->units.clear();
+    this->units.push_back(tileAtlas.at("red-soldier"));
 }
 
 void Map::proceduralMap(int width, int height, map<string, Tile> &tileAtlas)
@@ -135,6 +138,13 @@ void Map::draw(RenderWindow &window, float dt)
             this->tiles[y * this->width + x].draw(window, dt);
         }
     }
+    Vector2f pos;
+    //std::cout << "width: " << this->width << " tileSize " << this->tileSize << std::endl;
+    pos.x = this->width * this->tileSize +  (this->tileSize * 0.5);
+    pos.y = -8;
+    this->units[0].sprite.setPosition(pos);
+    //this->units[0].sprite.setColor(Color(0xff, 0xff, 0xff));
+    this->units[0].draw(window, dt);
 }
 
 void Map::updateDirection(TileType tileType)

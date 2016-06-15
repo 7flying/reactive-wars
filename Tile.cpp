@@ -1,4 +1,5 @@
 #include "Tile.hpp"
+#include <iostream>
 
 
 Tile::Tile() {}
@@ -49,7 +50,12 @@ Tile::Tile(const unsigned int tileSize, const unsigned int height,
 
     this->sprite.setOrigin(Vector2f(0.0f, tileSize * (height - 1)));
     this->sprite.setTexture(texture);
-    this->animHandler.frameSize = IntRect(0, 0, tileSize * 2, tileSize * height);
+    if (tileType == TileType::REDSOLDIER){
+        std::cout << "RED SOLDier " << tileSize << std::endl;
+        this->animHandler.frameSize = IntRect(0, 0, tileSize, tileSize * 2);
+    } else {
+        this->animHandler.frameSize = IntRect(0, 0, tileSize * 2, tileSize * height);
+    }
     for (auto animation : animations)
         this->animHandler.addAnim(animation);
     this->animHandler.update(0.0f);
