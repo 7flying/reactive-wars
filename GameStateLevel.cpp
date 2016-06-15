@@ -6,10 +6,21 @@ GameStateLevel::GameStateLevel(Game *game)
     this->game = game;
     Vector2f pos = Vector2f(this->game->window.getSize());
     this->gameView.setSize(pos);
+    this->guiView.setSize(pos);
     pos *= 0.5f;
     this->gameView.setCenter(pos);
+    this->guiView.setCenter(pos);
 
     this->map = Map("city_map.dat", 64, 64, game->tileAtlas);
+
+    // initialise zoom to 1
+    this->zoomLevel = 1.0f;
+    // centre the camera
+    sf::Vector2f centre(this->map.width, this->map.height * 0.5);
+    centre *= float(this->map.tileSize);
+    gameView.setCenter(centre);
+    // the user is doing nothing
+    this->actionState = ActionState::NONE;
 
 }
 
@@ -17,9 +28,11 @@ void GameStateLevel::draw(const float dt)
 {
     this->game->window.clear(Color::Black);
 
+    this->game->window.setView(this->guiView);
     this->game->window.draw(this->game->background);
+
     this->game->window.setView(this->gameView);
-    this->map.draw(this->game->window, dt);
+    map.draw(this->game->window, dt);
 }
 
 void GameStateLevel::update(const float dt)
@@ -42,6 +55,44 @@ void GameStateLevel::handleInput()
                 // Reload map
                 this->map.proceduralMap(64, 64, this->game->tileAtlas);
             }
+            break;
+        case Event::MouseMoved:
+            /* Pan the camera */
+            if (this->actionState == ActionState::PANNING) {
+                Vector2f pos = sf::Vector2f(
+                    Mouse::getPosition(this->game->window) - this->panningAnchor);
+                gameView.move(-1.0f * pos * this->zoomLevel);
+                panningAnchor = Mouse::getPosition(this->game->window);
+            }
+            break;
+        case Event::MouseButtonPressed:
+            /* Start panning */
+            if (event.mouseButton.button == Mouse::Middle) {
+                if (this->actionState != ActionState::PANNING) {
+                    this->actionState = ActionState::PANNING;
+                    this->panningAnchor = Mouse::getPosition(this->game->window);
+                }
+            }
+            break;
+        case Event::MouseButtonReleased:
+            /* Stop panning */
+            if (event.mouseButton.button == Mouse::Middle) {
+                this->actionState = ActionState::NONE;
+            }
+            break;
+            /* Zoom the view */
+        case Event::MouseWheelMoved:
+            if (event.mouseWheel.delta < 0) {
+                gameView.zoom(2.0f);
+                zoomLevel *= 2.0f;
+            } else {
+                gameView.zoom(0.5f);
+                zoomLevel *= 0.5f;
+            }
+            break;
+        case Event::Resized:
+            gameView.setSize(event.size.width, event.size.height);
+            gameView.zoom(zoomLevel);
             break;
         default:
             break;

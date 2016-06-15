@@ -6,7 +6,7 @@ SRCS=main.cpp Character.cpp CharacterClass.cpp Else.cpp FontManager.cpp \
 	Game.cpp GameStateInit.cpp GameStateLevel.cpp Mage.cpp Stats.cpp
 LIB=/usr/local/SFML-2.3.2/lib
 LINK=-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
-ARGS_DEBUG=-std=c++11
+ARGS_DEBUG=-std=c++11 -g
 ARGS_RELEASE=-std=c++11
 
 all:

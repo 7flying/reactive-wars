@@ -16,7 +16,8 @@ Map::Map(const string &filename, unsigned int width, unsigned int height,
 {
     this->numSelected = 0;
     this->tileSize = 8;
-    //load(filename, width, height, tileAtlas);
+    this->width = width;
+    this->height = height;
     proceduralMap(width, height, tileAtlas);
 }
 
@@ -55,8 +56,8 @@ void Map::proceduralMap(int width, int height, map<string, Tile> &tileAtlas)
             }
             switch((int) sec) {
             case 0:
-                 this->tiles.push_back(tileAtlas.at("grass"));
-                 break;
+                this->tiles.push_back(tileAtlas.at("grass"));
+                break;
             case 1:
                 this->tiles.push_back(tileAtlas.at("grass1"));
                 break;
@@ -91,14 +92,15 @@ void Map::proceduralMap(int width, int height, map<string, Tile> &tileAtlas)
             }
         }
         Tile &tile = this->tiles.back();
+        tile.avoid = 0;
+        tile.defence = 0;
         tile.tileVariant = 1;
-        tile.regions[0] = 0; // ein?
-        tile.population = 3;
-        tile.storedGoods = 3.0f;
+        tile.regions[0] = 0;
+        tile.movement = 1;
     }
 
     // Clean array
-    for (unsigned int i = 0; i < height; i++)
+    for (int i = 0; i < height; i++)
         delete[] a_pnoise[i];
     delete[] a_pnoise;
 
@@ -107,64 +109,10 @@ void Map::proceduralMap(int width, int height, map<string, Tile> &tileAtlas)
 void Map::load(const string &filename, unsigned int width, unsigned int height,
                map<std::string, Tile> &tileAtlas)
 {
-    ifstream inputFile;
-    inputFile.open(filename, ios::in | ios::binary);
-    this->width = width;
-    this->height = height;
-
-    for (int pos = 0; (unsigned) pos < this->width * this->height; pos++) {
-        this->resources.push_back(255);
-        this->selected.push_back(0);
-        cout << "position: " << pos << endl;
-        TileType tileType;
-        inputFile.read((char*) &tileType, sizeof(int));
-        cout << "Tile type: " << tileTypeToStr(tileType) << endl;
-        switch(tileType) {
-        default:
-        case TileType::VOID:
-        case TileType::GRASS:
-            this->tiles.push_back(tileAtlas.at("grass"));
-            break;
-        case TileType::FOREST:
-            this->tiles.push_back(tileAtlas.at("forest"));
-            break;
-        case TileType::WATER:
-            this->tiles.push_back(tileAtlas.at("water"));
-            break;
-        case TileType::RESIDENTIAL:
-            this->tiles.push_back(tileAtlas.at("residential"));
-            break;
-        case TileType::COMMERCIAL:
-            this->tiles.push_back(tileAtlas.at("commercial"));
-            break;
-        case TileType::INDUSTRIAL:
-            this->tiles.push_back(tileAtlas.at("industrial"));
-            break;
-        case TileType::ROAD:
-            this->tiles.push_back(tileAtlas.at("road"));
-            break;
-        }
-        Tile &tile = this->tiles.back();
-        inputFile.read((char*) &tile.tileVariant, sizeof(int));
-        inputFile.read((char*) &tile.regions, sizeof(int)*1); // ein?
-        inputFile.read((char*) &tile.population, sizeof(double));
-        inputFile.read((char*) &tile.storedGoods, sizeof(float));
-    }
-    inputFile.close();
 }
 
 void Map::save(const string &filename)
 {
-    ofstream outputFile;
-    outputFile.open(filename, ios::out | ios::binary);
-    for (auto tile : this->tiles) {
-        outputFile.write((char*) &tile.tileType, sizeof(int));
-        outputFile.write((char*) &tile.tileVariant, sizeof(int));
-        outputFile.write((char*) &tile.regions, sizeof(int)*1);
-        outputFile.write((char*) &tile.population, sizeof(double));
-        outputFile.write((char*) &tile.storedGoods, sizeof(float));
-    }
-    outputFile.close();
 }
 
 void Map::draw(RenderWindow &window, float dt)
