@@ -37,7 +37,8 @@ void GameStateLevel::draw(const float dt)
 
 void GameStateLevel::update(const float dt)
 {
-    
+    Vector2f pos;
+    //std::cout << "width: " << this->width << " tileSize " << this->tileSize << std::endl;
 }
 
 void GameStateLevel::handleInput()
@@ -55,7 +56,18 @@ void GameStateLevel::handleInput()
                 // Reload map
                 this->map.proceduralMap(Map::WIDTH, Map::HEIGHT,
                                         this->game->tileAtlas);
+            } else if (event.key.code == Keyboard::Left)
+                map.units[0].sprite.move(-10, 0);
+            else if (event.key.code == Keyboard::Right)
+                map.units[0].sprite.move(10, 0);
+            else if (event.key.code == Keyboard::Up)
+                map.units[0].sprite.move(0, -10);
+            else if(event.key.code == Keyboard::Down) {
+                map.units[0].sprite.move(0, 10);
+                
             }
+            this->game->window.draw(map.units[0].sprite);
+            this->game->window.display();
             break;
         case Event::MouseMoved:
             /* Pan the camera */
@@ -95,6 +107,8 @@ void GameStateLevel::handleInput()
             gameView.setSize(event.size.width, event.size.height);
             gameView.zoom(zoomLevel);
             break;
+            /* Sprite movement */
+            
         default:
             break;
         }

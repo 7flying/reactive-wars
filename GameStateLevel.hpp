@@ -20,6 +20,9 @@ private:
     View guiView;
     Map map;
 
+    int x = 0;
+    int y = 0;
+
     // To know what the user is doing
     ActionState actionState;
     // Records the mouse position

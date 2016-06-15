@@ -87,11 +87,7 @@ void Game::loadTextures()
     this->texman.loadTexture("water2", "media/water2.png");
 
     this->texman.loadTexture("red-soldier", "media/red-soldier.png");
-    /*this->texman.loadTexture("residential", "media/residential.png");
-      this->texman.loadTexture("commercial", "media/commercial.png");
-      this->texman.loadTexture("industrial", "media/industrial.png");
-      this->texman.loadTexture("road", "media/road.png");
-    */
+    this->texman.loadTexture("black-soldier", "media/black-soldier.png");
 }
 
 void Game::loadTiles()
@@ -136,4 +132,10 @@ void Game::loadTiles()
                                                   Animation(0, 3, 0.5f),
                                                   Animation(0, 3, 0.5f)},
                                           TileType::REDSOLDIER);
+    this->tileAtlas["black-soldier"] = Tile(this->unitTileSize, 1,
+                                          texman.getRef("black-soldier"),
+                                          { Animation(0, 3, 0.5f),
+                                                  Animation(0, 3, 0.5f),
+                                                  Animation(0, 3, 0.5f)},
+                                            TileType::BLACKSOLDIER);
 }
