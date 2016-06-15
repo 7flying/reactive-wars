@@ -13,6 +13,8 @@ using namespace std;
 enum class TileType {
     VOID, GRASS, GRASS1, GRASS2, GRASS3, MOUNTAIN, MOUNTAIN1, WATER, WATER1,
         WATER2,
+    //
+        REDSOLDIER,
     // unused:
         FOREST, RESIDENTIAL, COMMERCIAL, INDUSTRIAL, ROAD};
 
@@ -36,7 +38,7 @@ public:
     Tile();
     Tile(const unsigned int tileSize, const unsigned int height,
          Texture &texture, const vector<Animation> &animations,
-         const TileType tileType, int defence, int avoid, int movement);
+         const TileType tileType);
 
     void draw(RenderWindow &window, float dt);
     void update();

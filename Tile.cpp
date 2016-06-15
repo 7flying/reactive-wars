@@ -5,14 +5,47 @@ Tile::Tile() {}
 
 Tile::Tile(const unsigned int tileSize, const unsigned int height,
            Texture &texture, const vector<Animation> &animations,
-           const TileType tileType, int defence, int avoid, int movement)
+           const TileType tileType)
 {
     this->tileType = tileType;
     this->tileVariant = 0;
     this->regions[0] = 0;
-    this->defence = defence;
-    this->avoid = avoid;
-    this->movement = movement;
+    switch (tileType) {
+    case TileType::GRASS:
+    case TileType::GRASS1:
+        this->defence = 0;
+        this->avoid = 0;
+        this->movement = 1;
+        break;
+    case TileType::GRASS2:
+    case TileType::GRASS3:
+        this->defence = 0;
+        this->avoid = 10;
+        this->movement = 1;
+        break;
+    case TileType::MOUNTAIN:
+        this->defence = 0;
+        this->avoid = -10;
+        this->movement = 1;
+        break;
+    case TileType::MOUNTAIN1:
+        this->defence = 5;
+        this->avoid = 10;
+        this->movement = 1;
+        break;
+    case TileType::WATER:
+    case TileType::WATER1:
+    case TileType::WATER2:
+        this->defence = 0;
+        this->avoid = -15;
+        this->movement = 1;
+        break;
+    default:
+        this->defence = 0;
+        this->avoid = 0;
+        this->movement = 1;
+        break;
+    }
 
     this->sprite.setOrigin(Vector2f(0.0f, tileSize * (height - 1)));
     this->sprite.setTexture(texture);
@@ -36,19 +69,6 @@ void Tile::draw(RenderWindow &window, float dt)
 
 void Tile::update()
 {
-    /*
-    // -- here the tutorial 'evolutionates' the tiles depending on the
-    // population level
-    if ((this->tileType == TileType::RESIDENTIAL ||
-         this->tileType == TileType::COMMERCIAL ||
-         this->tileType == TileType::INDUSTRIAL) &&
-        this->population == this->maxPopPerLevel * (this->tileVariant + 1) &&
-        this->tileVariant < (int) this->maxLevels)
-    {
-        if (rand() % int(1e4) < 1e2 / (this->tileVariant + 1))
-            ++this->tileVariant;
-    }
-    */
 }
 
 string tileTypeToStr(TileType type)
