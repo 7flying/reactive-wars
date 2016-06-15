@@ -11,7 +11,7 @@ class PerlinNoise {
 
 private:
     std::mt19937 rng;
-
+    
     /** Generates an array with random values between 0 and 1 **/
     void generateWhiteNoise(unsigned int width, unsigned int height, float **arr);
 
@@ -24,10 +24,13 @@ private:
 public:
 
     PerlinNoise();
+    
+    /** Geneates a random value in case of failure **/
+    int randomValue(int from, int to);
+    
     /** Given an 2D array of widht x heigh (perlin) generates Perlin Noise **/
     void generatePerlinNoise(int width, int height, int octaveCount,
                              float persistance, float **perlin);
-
     /** Test implementation **/
     void test();
 

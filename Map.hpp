@@ -31,14 +31,15 @@ public:
     // 0 deselected, 1 selected, 2 invalid
     vector<char> selected;
 
+    PerlinNoise pnoise;
+
     Map();
     Map(const string &filename, unsigned int width, unsigned int height,
         map<string, Tile> &tileAtlas);
 
 
     /** Generates a map using Perlin Noise **/
-    void proceduralMap(unsigned int width, unsigned int height,
-                       map<std::string, Tile> &tileAtlas);
+    void proceduralMap(int width, int height, map<std::string, Tile> &tileAtlas);
     /** Load map from disk **/
     void load(const string &filename, unsigned int width, unsigned int height,
               map<std::string, Tile> &tileAtlas);

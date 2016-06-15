@@ -6,6 +6,12 @@ PerlinNoise::PerlinNoise()
     this->rng.seed(std::random_device()());
 }
 
+int PerlinNoise::randomValue(int from, int to)
+{
+    std::uniform_int_distribution<std::mt19937::result_type> dist(from, to);
+    return (int) dist(this->rng);
+}
+
 void
 PerlinNoise::generateWhiteNoise(unsigned int width, unsigned int height,
                                 float **arr)
@@ -77,6 +83,10 @@ PerlinNoise::generatePerlinNoise(int width, int height, int octaveCount,
     }
     float amplitude = 1.0f;
     float totalAmplitude = 0.0f;
+
+    float min = 1.0f;
+    float max = 0.0f;
+    bool first = false;
     // blend noise
     for (int octave = octaveCount - 1; octave >= 0; octave--) {
         amplitude *= persistance;
@@ -84,15 +94,38 @@ PerlinNoise::generatePerlinNoise(int width, int height, int octaveCount,
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 perlin[i][j] += smoothNoise[octave][i][j] * amplitude;
+                if (!std::isinf(std::abs(perlin[i][j])) &&
+                    !std::isnan(std::abs(perlin[i][j])))
+                {
+                    if (first) {
+                        min = perlin[i][j];
+                        max = perlin[i][j];
+                        first = false;
+                    }
+                    if (perlin[i][j] < min)
+                        min = perlin[i][j];
+                    if (perlin[i][j] > max)
+                        max = perlin[i][j];
+                }
             }
         }
     }
+
+    std::cout << "MIN: " << min << std::endl;
+    std::cout << "MAX: " << max << std::endl;
+    std::cout << "AMP: " << totalAmplitude << std::endl;
+    
     // normalise
     for (int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
-            perlin[i][j] /= totalAmplitude;
+            if (totalAmplitude > 0)
+                perlin[i][j] /= totalAmplitude;
+            if (perlin[i][j] < 0.0f || perlin[i][j] > 1.0f) {
+                perlin[i][j] = (perlin[i][j] - min) / (max - min);
+            }
         }
     }
+    
     // Clean up base and smooth noise for each octave
     for (int i = 0; i < height; i++) {
         delete[] base[i];

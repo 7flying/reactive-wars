@@ -20,39 +20,57 @@ Map::Map(const string &filename, unsigned int width, unsigned int height,
     proceduralMap(width, height, tileAtlas);
 }
 
-void Map::proceduralMap(unsigned int width, unsigned int height,
-                        map<string, Tile> &tileAtlas)
+void Map::proceduralMap(int width, int height, map<string, Tile> &tileAtlas)
 {
     this->width = width;
     this->height = height;
     this->tiles.clear();
-    PerlinNoise pnoise;
+    // PerlinNoise pnoise;
     // Generate array for perlin noise
     float ** a_pnoise = new float*[height];
-    for (unsigned int i = 0; i < height; i++)
+    for (int i = 0; i < height; i++)
         a_pnoise[i] = new float[width];
-    pnoise.generatePerlinNoise(width, height, 6, 1.0f, a_pnoise);
+    this->pnoise.generatePerlinNoise(width, height, 5, 0.7f, a_pnoise); // 5, 0.7 | 5, 0.3
     // Map each value to a tile type
-    for (int i = 0; i < this->width; i++) {
-        for (int j = 0; j < this->height; j++) {
+    for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
             this->resources.push_back(255);
             this->selected.push_back(0);
-            int selected = floor(a_pnoise[i][j] * (TILE_NUM - 1));
-            switch(selected) {
+            double sec = round(a_pnoise[i][j] * (TILE_NUM - 1));
+            if (std::isinf(std::abs(sec)) || std::isnan(std::abs(sec))) {
+                // get an adjacent tile
+                if (i > 0 && j > 0)
+                    sec = round(std::abs(a_pnoise[i-1][j-1] * (TILE_NUM -1)));
+                else
+                    sec = 0.0f;
+            }
+            if (sec < 0)
+                sec *= -1;
+            if (sec > (TILE_NUM - 1))
+                sec = ((int) sec % TILE_NUM);
+            if (sec < 0 || sec > (TILE_NUM - 1)) {
+                std::cout << j << ", " << i << ": " << sec << " to ";
+                sec = sec / (TILE_NUM - 1);
+                std::cout << sec << std::endl;
+            }
+            switch((int) sec) {
+            case 0:
+                 this->tiles.push_back(tileAtlas.at("grass"));
+                 break;
             case 1:
-                this->tiles.push_back(tileAtlas.at("moun1"));
+                this->tiles.push_back(tileAtlas.at("grass1"));
                 break;
             case 2:
                 this->tiles.push_back(tileAtlas.at("grass2"));
                 break;
             case 3:
-                this->tiles.push_back(tileAtlas.at("grass1"));
+                this->tiles.push_back(tileAtlas.at("grass3"));
                 break;
             case 4:
-                this->tiles.push_back(tileAtlas.at("grass"));
+                this->tiles.push_back(tileAtlas.at("moun"));
                 break;
             case 5:
-                this->tiles.push_back(tileAtlas.at("moun"));
+                this->tiles.push_back(tileAtlas.at("moun1"));
                 break;
             case 6:
                 this->tiles.push_back(tileAtlas.at("water"));
@@ -64,7 +82,11 @@ void Map::proceduralMap(unsigned int width, unsigned int height,
                 this->tiles.push_back(tileAtlas.at("water2"));
                 break;
             default:
-                this->tiles.push_back(tileAtlas.at("grass3"));
+                int temp = pnoise.randomValue(4, 5);
+                if (temp == 4)
+                    this->tiles.push_back(tileAtlas.at("moun"));
+                else
+                    this->tiles.push_back(tileAtlas.at("moun1"));
                 break;
             }
         }
