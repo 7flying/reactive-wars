@@ -37,8 +37,6 @@ void GameStateLevel::draw(const float dt)
 
 void GameStateLevel::update(const float dt)
 {
-    Vector2f pos;
-    //std::cout << "width: " << this->width << " tileSize " << this->tileSize << std::endl;
 }
 
 void GameStateLevel::handleInput()

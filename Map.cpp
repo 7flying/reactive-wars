@@ -143,7 +143,7 @@ void Map::draw(RenderWindow &window, float dt)
     pos.x = this->width * this->tileSize +  (this->tileSize * 0.5);
     pos.y = -8;
     this->units[0].sprite.setPosition(pos);
-    this->units[0].sprite.move(100, 0);
+    //this->units[0].sprite.move(100, 0);
     this->units[0].draw(window, dt);
 }
 
