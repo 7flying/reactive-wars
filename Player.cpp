@@ -3,7 +3,7 @@
 
 Player::Player(Vector2f initialPos)
 {
-    this->texture.loadFromFile("archer.png");
+    this->texture.loadFromFile("media/arch.png");
     this->down.setSpriteSheet(texture);
     this->left.setSpriteSheet(texture);
     this->right.setSpriteSheet(texture);
@@ -51,7 +51,18 @@ SpriteAnimation *Player::getAnimationRight()
     return &this->right;
 }
 
+AnimatedSprite *Player::getSprite()
+{
+    return this->sprite;
+}
+
 void Player::stopAnimation()
 {
     this->sprite->stop();
 }
+
+void Player::play()
+{
+    this->sprite->play(*this->current);
+}
+

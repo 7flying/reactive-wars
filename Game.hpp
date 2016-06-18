@@ -30,6 +30,9 @@ public:
     Game();
     ~Game();
 
+    static const int WIN_WIDTH = 800;
+    static const int WIN_HEIGHT = 600;
+
     // Stack to store the different states of the game
     stack<GameState*> states;
     // Main game window

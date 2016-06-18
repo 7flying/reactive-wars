@@ -6,6 +6,7 @@
 #include "Game.hpp"
 #include "GameState.hpp"
 #include "Map.hpp"
+#include "Player.hpp"
 
 
 using namespace std;
@@ -29,6 +30,9 @@ private:
     Vector2i panningAnchor;
     // Gets the zoom (power of 2)
     float zoomLevel;
+
+    // Player
+    Player *player;
 
 public:
     GameStateLevel(Game *game);

@@ -22,7 +22,8 @@ GameStateLevel::GameStateLevel(Game *game)
     // the user is doing nothing
     this->actionState = ActionState::NONE;
 
-    
+    this->player = new Player(Vector2f(Vector2i(Game::WIN_WIDTH,
+                                                Game::WIN_HEIGHT) / 2));
 }
 
 void GameStateLevel::draw(const float dt)
@@ -34,10 +35,13 @@ void GameStateLevel::draw(const float dt)
 
     this->game->window.setView(this->gameView);
     map.draw(this->game->window, dt);
+
+    this->game->window.draw(*this->player->getSprite());
 }
 
 void GameStateLevel::update(const float dt)
 {
+    this->player->play();
 }
 
 void GameStateLevel::handleInput()

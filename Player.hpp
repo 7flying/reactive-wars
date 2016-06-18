@@ -11,7 +11,6 @@ using namespace sf;
 class Player {
 
 private:
- 
     SpriteAnimation up, down, left, right;
     SpriteAnimation *current;
     Texture texture;
@@ -20,7 +19,6 @@ private:
 
 public:
     Vector2f movement;
-    
     Player(Vector2f initialPos);
     void changeAnimation(SpriteAnimation *animation);
     void updateSpeed(float s);
@@ -28,7 +26,9 @@ public:
     SpriteAnimation* getAnimationDown();
     SpriteAnimation* getAnimationLeft();
     SpriteAnimation* getAnimationRight();
+    AnimatedSprite* getSprite();
     void stopAnimation();
+    void play();
 };
 
 
