@@ -20,35 +20,38 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 ////////////////////////////////////////////////////////////
+//
+// Modified by 7flying, June 2016
+///////////////////////////////////////////////////////////
 
-#include "Animation.hpp"
+#include "SpriteAnimation.hpp"
 
-Animation::Animation() : m_texture(NULL)
+SpriteAnimation::SpriteAnimation() : m_texture(NULL)
 {
 
 }
 
-void Animation::addFrame(sf::IntRect rect)
+void SpriteAnimation::addFrame(sf::IntRect rect)
 {
     m_frames.push_back(rect);
 }
 
-void Animation::setSpriteSheet(const sf::Texture& texture)
+void SpriteAnimation::setSpriteSheet(const sf::Texture& texture)
 {
     m_texture = &texture;
 }
 
-const sf::Texture* Animation::getSpriteSheet() const
+const sf::Texture* SpriteAnimation::getSpriteSheet() const
 {
     return m_texture;
 }
 
-std::size_t Animation::getSize() const
+std::size_t SpriteAnimation::getSize() const
 {
     return m_frames.size();
 }
 
-const sf::IntRect& Animation::getFrame(std::size_t n) const
+const sf::IntRect& SpriteAnimation::getFrame(std::size_t n) const
 {
     return m_frames[n];
 }

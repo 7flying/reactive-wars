@@ -20,6 +20,9 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 ////////////////////////////////////////////////////////////
+//
+// Modified by 7flying, June 2016
+////////////////////////////////////////////////////////////
 
 #include "AnimatedSprite.hpp"
 
@@ -29,7 +32,7 @@ AnimatedSprite::AnimatedSprite(sf::Time frameTime, bool paused, bool looped) :
 
 }
 
-void AnimatedSprite::setAnimation(const Animation& animation)
+void AnimatedSprite::setAnimation(const SpriteAnimation& animation)
 {
     m_animation = &animation;
     m_texture = m_animation->getSpriteSheet();
@@ -47,7 +50,7 @@ void AnimatedSprite::play()
     m_isPaused = false;
 }
 
-void AnimatedSprite::play(const Animation& animation)
+void AnimatedSprite::play(const SpriteAnimation& animation)
 {
     if (getAnimation() != &animation)
         setAnimation(animation);
@@ -80,7 +83,7 @@ void AnimatedSprite::setColor(const sf::Color& color)
     m_vertices[3].color = color;
 }
 
-const Animation* AnimatedSprite::getAnimation() const
+const SpriteAnimation* AnimatedSprite::getAnimation() const
 {
     return m_animation;
 }

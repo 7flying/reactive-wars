@@ -2,17 +2,33 @@
 #define PLAYER_HPP
 
 #include <SFML/Graphics.hpp>
+#include "SpriteAnimation.hpp"
+#include "AnimatedSprite.hpp"
+
+using namespace sf;
 
 
 class Player {
 
-public:
-    Player(int posx, int posy, int vx, int vy);
 private:
-    int posx, posy, vx, vy;
+ 
+    SpriteAnimation up, down, left, right;
+    SpriteAnimation *current;
+    Texture texture;
+    AnimatedSprite *sprite;
+    float speed;
 
+public:
+    Vector2f movement;
     
-    
+    Player(Vector2f initialPos);
+    void changeAnimation(SpriteAnimation *animation);
+    void updateSpeed(float s);
+    SpriteAnimation* getAnimationUp();
+    SpriteAnimation* getAnimationDown();
+    SpriteAnimation* getAnimationLeft();
+    SpriteAnimation* getAnimationRight();
+    void stopAnimation();
 };
 
 

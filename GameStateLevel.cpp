@@ -22,6 +22,7 @@ GameStateLevel::GameStateLevel(Game *game)
     // the user is doing nothing
     this->actionState = ActionState::NONE;
 
+    
 }
 
 void GameStateLevel::draw(const float dt)
