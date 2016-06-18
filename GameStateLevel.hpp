@@ -37,8 +37,8 @@ private:
 public:
     GameStateLevel(Game *game);
 
-    virtual void draw(const float dt);
-    virtual void update(const float dt);
+    virtual void draw(const Time dt);
+    virtual void update(const Time dt);
     virtual void handleInput();
 };
 

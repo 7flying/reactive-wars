@@ -11,9 +11,9 @@ public:
     Game *game;
 
     /** Draw state to the screen.**/
-    virtual void draw(const float dt) = 0;
+    virtual void draw(const Time dt) = 0;
     /** Update the logic.**/
-    virtual void update(const float dt) = 0;
+    virtual void update(const Time dt) = 0;
     /** Handle user input.**/
     virtual void handleInput() = 0;
 };

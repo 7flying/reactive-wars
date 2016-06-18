@@ -53,14 +53,14 @@ void Game::gameLoop()
     Clock clock;
     while (this->window.isOpen()) {
         Time elapsed = clock.restart();
-        float deltaTime = elapsed.asSeconds();
+        //float deltaTime = elapsed.asSeconds();
 
         if (this->peekState() == nullptr)
             continue;
         this->peekState()->handleInput();
-        this->peekState()->update(deltaTime);
+        this->peekState()->update(elapsed);
         this->window.clear(Color::Black);
-        this->peekState()->draw(deltaTime);
+        this->peekState()->draw(elapsed);
         this->window.display();
     }
 }

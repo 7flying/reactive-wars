@@ -19,6 +19,8 @@ Player::Player(Vector2f initialPos)
     this->current = &this->up;
     this->sprite = new AnimatedSprite(seconds(0.2), true, false);
     this->sprite->setPosition(initialPos);
+    this->movement = new Vector2f(0.f, 0.f);
+    this->speed = 80.f;
 }
 
 void Player::changeAnimation(SpriteAnimation *animation)
@@ -66,3 +68,27 @@ void Player::play()
     this->sprite->play(*this->current);
 }
 
+float Player::getSpeed()
+{
+    return this->speed;
+}
+
+void Player::setSpeed(float speed)
+{
+    this->speed = speed;
+}
+
+Vector2f *Player::getMovement()
+{
+    return this->movement;
+}
+
+bool Player::getAnimStop()
+{
+    return this->animStop;
+}
+
+void Player::setAnimStop(bool stop)
+{
+    this->animStop = stop;
+}

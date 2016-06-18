@@ -10,14 +10,14 @@ GameStateInit::GameStateInit(Game *game)
     this->view.setCenter(pos);
 }
 
-void GameStateInit::draw(const float dt)
+void GameStateInit::draw(const Time dt)
 {
     this->game->window.setView(this->view);
     this->game->window.clear(Color::Black);
     this->game->window.draw(this->game->background);
 }
 
-void GameStateInit::update(const float dt)
+void GameStateInit::update(const Time dt)
 {
     
 }

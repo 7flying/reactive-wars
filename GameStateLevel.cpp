@@ -26,7 +26,7 @@ GameStateLevel::GameStateLevel(Game *game)
                                                 Game::WIN_HEIGHT) / 2));
 }
 
-void GameStateLevel::draw(const float dt)
+void GameStateLevel::draw(const Time dt)
 {
     this->game->window.clear(Color::Black);
 
@@ -34,19 +34,25 @@ void GameStateLevel::draw(const float dt)
     this->game->window.draw(this->game->background);
 
     this->game->window.setView(this->gameView);
-    map.draw(this->game->window, dt);
+    map.draw(this->game->window, dt.asSeconds());
 
     this->game->window.draw(*this->player->getSprite());
 }
 
-void GameStateLevel::update(const float dt)
+void GameStateLevel::update(const Time dt)
 {
-    this->player->play();
+   this->player->play();
+   this->player->getSprite()->move(
+       *this->player->getMovement() * dt.asSeconds());
+   if (this->player->getAnimStop())
+       this->player->stopAnimation();
+   this->player->getSprite()->update(dt);
 }
 
 void GameStateLevel::handleInput()
 {
     Event event;
+    bool stopAnim = true;
     while (this->game->window.pollEvent(event)) {
         switch (event.type) {
         case Event::Closed:
@@ -59,18 +65,30 @@ void GameStateLevel::handleInput()
                 // Reload map
                 this->map.proceduralMap(Map::WIDTH, Map::HEIGHT,
                                         this->game->tileAtlas);
-            } else if (event.key.code == Keyboard::Left)
-                map.units[0].sprite.move(-10, 0);
-            else if (event.key.code == Keyboard::Right)
-                map.units[0].sprite.move(10, 0);
-            else if (event.key.code == Keyboard::Up)
-                map.units[0].sprite.move(0, -10);
-            else if(event.key.code == Keyboard::Down) {
-                map.units[0].sprite.move(0, 10);
-                
+            } else if (event.key.code == Keyboard::Left) {
+                //map.units[0].sprite.move(-10, 0);
+                this->player->changeAnimation(this->player->getAnimationLeft());
+                this->player->getMovement()->x -= this->player->getSpeed();
+                stopAnim = false;
+            } else if (event.key.code == Keyboard::Right){
+                this->player->changeAnimation(this->player->getAnimationRight());
+                this->player->getMovement()->x += this->player->getSpeed();
+                stopAnim = false;
+                //map.units[0].sprite.move(10, 0);
+            } else if (event.key.code == Keyboard::Up) {
+                this->player->changeAnimation(this->player->getAnimationUp());
+                this->player->getMovement()->y -= this->player->getSpeed();
+                stopAnim = false;
+                //map.units[0].sprite.move(0, -10);
+            } else if(event.key.code == Keyboard::Down) {
+                this->player->changeAnimation(this->player->getAnimationDown());
+                this->player->getMovement()->y += this->player->getSpeed();
+                stopAnim = false;
+                //map.units[0].sprite.move(0, 10);
             }
-            this->game->window.draw(map.units[0].sprite);
-            this->game->window.display();
+            this->player->setAnimStop(stopAnim);
+            //this->game->window.draw(map.units[0].sprite);
+            //this->game->window.display();
             break;
         case Event::MouseMoved:
             /* Pan the camera */
