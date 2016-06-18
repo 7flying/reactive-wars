@@ -29,7 +29,6 @@ public:
     unsigned int width, height;
     vector<Tile> tiles;
     vector<int> resources;
-    vector<Tile> units;
 
     unsigned int tileSize, numSelected;
     unsigned int numRegions[1];

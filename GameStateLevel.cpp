@@ -64,8 +64,6 @@ void GameStateLevel::handleInput()
                 this->map.proceduralMap(Map::WIDTH, Map::HEIGHT,
                                         this->game->tileAtlas);
             }
-            //this->game->window.draw(map.units[0].sprite);
-            //this->game->window.display();
             break;
         case Event::MouseMoved:
             /* Pan the camera */
@@ -115,7 +113,6 @@ void GameStateLevel::handleInput()
     this->player->getMovement()->x = 0;
     this->player->getMovement()->y = 0;
     if (Keyboard::isKeyPressed(Keyboard::A)) {
-        //map.units[0].sprite.move(-10, 0);
         this->player->changeAnimation(this->player->getAnimationLeft());
         this->player->getMovement()->x -= this->player->getSpeed();
         stopAnim = false;
@@ -124,19 +121,16 @@ void GameStateLevel::handleInput()
         this->player->changeAnimation(this->player->getAnimationRight());
         this->player->getMovement()->x += this->player->getSpeed();
         stopAnim = false;
-        //map.units[0].sprite.move(10, 0);
     }
     if (Keyboard::isKeyPressed(Keyboard::W)) {
         this->player->changeAnimation(this->player->getAnimationUp());
         this->player->getMovement()->y -= this->player->getSpeed();
         stopAnim = false;
-        //map.units[0].sprite.move(0, -10);
     }
     if (Keyboard::isKeyPressed(Keyboard::S)) {
         this->player->changeAnimation(this->player->getAnimationDown());
         this->player->getMovement()->y += this->player->getSpeed();
         stopAnim = false;
-        //map.units[0].sprite.move(0, 10);
     }
     this->player->setAnimStop(stopAnim);
     this->player->play();
