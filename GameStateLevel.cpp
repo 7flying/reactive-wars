@@ -41,18 +41,16 @@ void GameStateLevel::draw(const Time dt)
 
 void GameStateLevel::update(const Time dt)
 {
-   this->player->play();
-   this->player->getSprite()->move(
-       *this->player->getMovement() * dt.asSeconds());
-   if (this->player->getAnimStop())
-       this->player->stopAnimation();
-   this->player->getSprite()->update(dt);
+    this->player->getSprite()->move(
+        *this->player->getMovement() * dt.asSeconds());
+    if (this->player->getAnimStop())
+        this->player->stopAnimation();
+    this->player->getSprite()->update(dt);
 }
 
 void GameStateLevel::handleInput()
 {
     Event event;
-    bool stopAnim = true;
     while (this->game->window.pollEvent(event)) {
         switch (event.type) {
         case Event::Closed:
@@ -61,32 +59,11 @@ void GameStateLevel::handleInput()
         case Event::KeyPressed:
             if (event.key.code == Keyboard::Escape)
                 this->game->window.close();
-            else if (event.key.code == Keyboard::R) {
+            if (event.key.code == Keyboard::R) {
                 // Reload map
                 this->map.proceduralMap(Map::WIDTH, Map::HEIGHT,
                                         this->game->tileAtlas);
-            } else if (event.key.code == Keyboard::Left) {
-                //map.units[0].sprite.move(-10, 0);
-                this->player->changeAnimation(this->player->getAnimationLeft());
-                this->player->getMovement()->x -= this->player->getSpeed();
-                stopAnim = false;
-            } else if (event.key.code == Keyboard::Right){
-                this->player->changeAnimation(this->player->getAnimationRight());
-                this->player->getMovement()->x += this->player->getSpeed();
-                stopAnim = false;
-                //map.units[0].sprite.move(10, 0);
-            } else if (event.key.code == Keyboard::Up) {
-                this->player->changeAnimation(this->player->getAnimationUp());
-                this->player->getMovement()->y -= this->player->getSpeed();
-                stopAnim = false;
-                //map.units[0].sprite.move(0, -10);
-            } else if(event.key.code == Keyboard::Down) {
-                this->player->changeAnimation(this->player->getAnimationDown());
-                this->player->getMovement()->y += this->player->getSpeed();
-                stopAnim = false;
-                //map.units[0].sprite.move(0, 10);
             }
-            this->player->setAnimStop(stopAnim);
             //this->game->window.draw(map.units[0].sprite);
             //this->game->window.display();
             break;
@@ -134,4 +111,33 @@ void GameStateLevel::handleInput()
             break;
         }
     }
+    bool stopAnim = true;
+    this->player->getMovement()->x = 0;
+    this->player->getMovement()->y = 0;
+    if (Keyboard::isKeyPressed(Keyboard::A)) {
+        //map.units[0].sprite.move(-10, 0);
+        this->player->changeAnimation(this->player->getAnimationLeft());
+        this->player->getMovement()->x -= this->player->getSpeed();
+        stopAnim = false;
+    }
+    if (Keyboard::isKeyPressed(Keyboard::D)) {
+        this->player->changeAnimation(this->player->getAnimationRight());
+        this->player->getMovement()->x += this->player->getSpeed();
+        stopAnim = false;
+        //map.units[0].sprite.move(10, 0);
+    }
+    if (Keyboard::isKeyPressed(Keyboard::W)) {
+        this->player->changeAnimation(this->player->getAnimationUp());
+        this->player->getMovement()->y -= this->player->getSpeed();
+        stopAnim = false;
+        //map.units[0].sprite.move(0, -10);
+    }
+    if (Keyboard::isKeyPressed(Keyboard::S)) {
+        this->player->changeAnimation(this->player->getAnimationDown());
+        this->player->getMovement()->y += this->player->getSpeed();
+        stopAnim = false;
+        //map.units[0].sprite.move(0, 10);
+    }
+    this->player->setAnimStop(stopAnim);
+    this->player->play();
 }
