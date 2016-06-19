@@ -48,6 +48,8 @@ private:
 
     Vector2f getNextEnemyPos();
     void loadEnemy(int type, bool special=false);
+    Vector2f getDirectionToUnit(Unit *source, Unit *destination);
+    void updateDirectionUnit(Unit *unit, Vector2f &direction);
 
 public:
     GameStateLevel(Game *game);

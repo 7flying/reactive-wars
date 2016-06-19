@@ -61,7 +61,8 @@ void GameStateLevel::draw(const Time dt)
 
 void GameStateLevel::update(const Time dt)
 {
-    // (player is played on handle input)
+    // Play player
+    this->player->play();
     // Play soldiers
     for (int i = 0; i < (int) this->soldiers.size(); i++)
         this->soldiers.at(i)->play();
@@ -74,7 +75,21 @@ void GameStateLevel::update(const Time dt)
     if (this->player->getAnimStop())
         this->player->stopAnimation();
     // TODO: move soldiers
+    for (int i = 0; i < (int) this->soldiers.size(); i++) {
+        Vector2f direction = this->getDirectionToUnit(this->soldiers.at(i),
+                                                      this->player);
+        this->updateDirectionUnit(this->soldiers.at(i), direction);
+        this->soldiers.at(i)->getSprite()->move(
+            *this->soldiers.at(i)->getMovement() * dt.asSeconds());
+    }
     // TODO: move skeletons
+    for (int i = 0; i < (int) this->skeletons.size(); i++) {
+        Vector2f direction = this->getDirectionToUnit(this->skeletons.at(i),
+                                                      this->player);
+        this->updateDirectionUnit(this->skeletons.at(i), direction);
+        this->skeletons.at(i)->getSprite()->move(
+            *this->skeletons.at(i)->getMovement() * dt.asSeconds());
+    }
     
     // Update player
     this->player->getSprite()->update(dt);
@@ -154,6 +169,14 @@ void GameStateLevel::handleInput()
     bool stopAnim = true;
     this->player->getMovement()->x = 0;
     this->player->getMovement()->y = 0;
+    for (int i = 0; i < (int) this->soldiers.size(); i++) {
+        this->soldiers.at(i)->getMovement()->x = 0;
+        this->soldiers.at(i)->getMovement()->y = 0;
+    }
+    for (int i = 0; i < (int) this->skeletons.size(); i++){
+        this->skeletons.at(i)->getMovement()->x = 0;
+        this->skeletons.at(i)->getMovement()->y = 0;
+    }
     if (Keyboard::isKeyPressed(Keyboard::A)) {
         this->player->changeAnimation(this->player->getAnimationLeft());
         this->player->getMovement()->x -= this->player->getSpeed();
@@ -175,7 +198,7 @@ void GameStateLevel::handleInput()
         stopAnim = false;
     }
     this->player->setAnimStop(stopAnim);
-    this->player->play();
+    
     // Check if new bullets are fired
     int bulletx = 0, bullety = 0;
     bool fired = false;
@@ -228,11 +251,34 @@ Vector2f GameStateLevel::getNextEnemyPos()
     }
 }
 
-
 void GameStateLevel::loadEnemy(int type, bool special)
 {
     if (special)
         this->skeletons.push_back(new Skeleton(this->getNextEnemyPos()));
     else
         this->soldiers.push_back(new Soldier(this->getNextEnemyPos(), type));
+}
+
+Vector2f GameStateLevel::getDirectionToUnit(Unit *source, Unit *destination)
+{
+    return {destination->getPosition().x - source->getPosition().x,
+            destination->getPosition().y - source->getPosition().y};
+}
+
+void GameStateLevel::updateDirectionUnit(Unit *unit, Vector2f &direction)
+{
+    if (direction.x < 0) {
+        unit->changeAnimation(unit->getAnimationLeft());
+        unit->getMovement()->x -= unit->getSpeed();
+    } else {
+        unit->changeAnimation(unit->getAnimationRight());
+        unit->getMovement()->x += unit->getSpeed();
+    }
+    if (direction.y < 0) {
+        unit->changeAnimation(unit->getAnimationUp());
+        unit->getMovement()->y -= unit->getSpeed();
+    } else {
+        unit->changeAnimation(unit->getAnimationDown());
+        unit->getMovement()->y += unit->getSpeed();
+    }
 }
