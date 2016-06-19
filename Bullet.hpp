@@ -15,9 +15,9 @@ private:
     
 
 public:
-    static constexpr float ABS_VELOCITY = 10.0f;
-    static const int WIDTH = 10;
-    static const int HEIGHT = 10;
+    static constexpr float ABS_VELOCITY = 5.0f;
+    static const int WIDTH = 2;
+    static const int HEIGHT = 2;
     
     Bullet(float mx, float my, Vector2f velocity);
     void update();

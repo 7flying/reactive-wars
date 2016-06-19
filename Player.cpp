@@ -24,14 +24,11 @@ Player::Player(Vector2f initialPos):Unit(initialPos)
 
 void Player::fireBullet(Vector2i direction)
 {
-    std::cout << "Firing: Position: " << this->sprite->getPosition().x
-              << ", " << this->sprite->getPosition().y << " origin (same), velocity: "
-              << (direction.x * Bullet::ABS_VELOCITY) << ", "
-              << (direction.y * Bullet::ABS_VELOCITY) << std::endl;
-    this->bullets.push_back(Bullet(this->sprite->getPosition().x,
-                                   this->sprite->getPosition().y,
-                                   {Bullet::ABS_VELOCITY * direction.x,
-                                           Bullet::ABS_VELOCITY * direction.y}));
+    this->bullets.push_back(Bullet(
+                                this->sprite->getPosition().x + SIDE_SIZE * 0.5,
+                                this->sprite->getPosition().y + SIDE_SIZE * 0.5,
+                                {Bullet::ABS_VELOCITY * direction.x,
+                                        Bullet::ABS_VELOCITY * direction.y}));
 }
 
 Vector2i Player::getDirection()
@@ -52,8 +49,6 @@ void Player::checkBullets(Vector2u window)
         if (status)
             toDelete.push_back(i);
     }
-    for (int i = 0; i < (int) toDelete.size(); i++) {
+    for (int i = 0; i < (int) toDelete.size(); i++)
         this->bullets.erase(this->bullets.begin() + toDelete.at(i));
-        cout << "Erasing element: " << i << endl;
-    }
 }

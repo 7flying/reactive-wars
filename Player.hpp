@@ -11,6 +11,7 @@ using namespace sf;
 class Player: public Unit {
 private:
 
+    static const int SIDE_SIZE = 32;
     /** Gets the direction of the sprite (positive or negative) **/
     Vector2i getDirection();
 
