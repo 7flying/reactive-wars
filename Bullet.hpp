@@ -22,7 +22,7 @@ public:
     Bullet(float mx, float my, Vector2f velocity);
     void update();
     /* Checks if the bullet is outside the window */
-    bool checkOutOfWindow(Vector2i window) const;
+    bool checkOutOfWindow(Vector2u window) const;
     RectangleShape *getShape();
 };
 

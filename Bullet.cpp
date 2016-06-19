@@ -16,7 +16,7 @@ void Bullet::update()
     this->shape.move(this->velocity);
 }
 
-bool Bullet::checkOutOfWindow(Vector2i window) const
+bool Bullet::checkOutOfWindow(Vector2u window) const
 {
     if (this->shape.getPosition().x > window.x
         || this->shape.getPosition().x < 0)

@@ -50,6 +50,7 @@ void GameStateLevel::update(const Time dt)
     if (this->player->getAnimStop())
         this->player->stopAnimation();
     this->player->getSprite()->update(dt);
+    this->player->checkBullets(this->game->window.getSize());
     for (int i = 0; i < (int) this->player->bullets.size(); i++)
         this->player->bullets.at(i).update();
 }

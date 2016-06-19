@@ -44,7 +44,7 @@ Vector2i Player::getDirection()
     return {x, y};
 }
 
-void Player::checkBullets(Vector2i window)
+void Player::checkBullets(Vector2u window)
 {
     vector<int> toDelete;
     for (int i = 0; i < (int) this->bullets.size(); i++) {
