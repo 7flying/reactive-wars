@@ -1,14 +1,14 @@
 #include "Bullet.hpp"
 
 
-Bullet::Bullet(float mx, float my, Vector2f origin, Vector2f velocity)
+Bullet::Bullet(float mx, float my, Vector2f velocity)
 {
     this->shape.setPosition(mx, my);
     this->velocity.x = velocity.x;
     this->velocity.y = velocity.y;
     this->shape.setSize({Bullet::WIDTH, Bullet::HEIGHT});
     this->shape.setFillColor(Color::Black);
-    this->shape.setOrigin(origin.x, origin.y);
+    this->shape.setOrigin(Bullet::WIDTH / 2.f, Bullet::HEIGHT / 2.f);
 }
 
 void Bullet::update()
@@ -25,4 +25,9 @@ bool Bullet::checkOutOfWindow(Vector2i window) const
         || this->shape.getPosition().y < 0)
         return true;
     return false;
+}
+
+RectangleShape *Bullet::getShape()
+{
+    return &this->shape;
 }

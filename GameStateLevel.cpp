@@ -39,6 +39,8 @@ void GameStateLevel::draw(const Time dt)
     map.draw(this->game->window, dt.asSeconds());
 
     this->game->window.draw(*this->player->getSprite());
+    for (auto b : this->player->bullets)
+        this->game->window.draw(*b.getShape());
 }
 
 void GameStateLevel::update(const Time dt)
@@ -48,19 +50,20 @@ void GameStateLevel::update(const Time dt)
     if (this->player->getAnimStop())
         this->player->stopAnimation();
     this->player->getSprite()->update(dt);
-    for (auto b : this->player->bullets){
-        b.update();
-    }
+    for (int i = 0; i < (int) this->player->bullets.size(); i++)
+        this->player->bullets.at(i).update();
 }
 
 void GameStateLevel::handleInput()
 {
+    /*
     std::cout << "Position: x:"
               << this->player->getSprite()->getPosition().x
               << " y: " << this->player->getSprite()->getPosition().y
               << std::endl;
     std::cout << this->game->window.getSize().x << " "
               << this->game->window.getSize().y << std::endl;
+    */
     Event event;
     while (this->game->window.pollEvent(event)) {
         switch (event.type) {
@@ -145,7 +148,7 @@ void GameStateLevel::handleInput()
     this->player->setAnimStop(stopAnim);
     this->player->play();
     // Check if new bullets are fired
-    int bulletx = 1, bullety = 1;
+    int bulletx = 0, bullety = 0;
     bool fired = false;
     if (Keyboard::isKeyPressed(Keyboard::Left)) {
         bulletx = -1;

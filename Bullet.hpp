@@ -11,7 +11,7 @@ using namespace sf;
 class Bullet {
 private:
     RectangleShape shape;
-    Vector2f velocity{10.f, 10.f};
+    Vector2f velocity{0.f, 0.f};
     
 
 public:
@@ -19,10 +19,11 @@ public:
     static const int WIDTH = 10;
     static const int HEIGHT = 10;
     
-    Bullet(float mx, float my, Vector2f origin, Vector2f velocity);
+    Bullet(float mx, float my, Vector2f velocity);
     void update();
     /* Checks if the bullet is outside the window */
     bool checkOutOfWindow(Vector2i window) const;
+    RectangleShape *getShape();
 };
 
 
