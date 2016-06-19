@@ -34,3 +34,21 @@ Soldier::Soldier(Vector2f initialPos, int variant):Unit(initialPos)
     this->movement = new Vector2f(0.f, 0.f);
 }
 
+int Soldier::getVariant()
+{
+    return this->variant;
+}
+
+int Soldier::getPoints()
+{
+    switch (this->variant) {
+    case 0:
+        return 40;
+    case 1:
+        return 50;
+    case 2:
+        return 70;
+    default:
+        return 0;
+    }
+}

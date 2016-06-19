@@ -3,10 +3,15 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
+#include <random>
+#include <iostream>
+#include <utility>
 #include "Game.hpp"
 #include "GameState.hpp"
 #include "Map.hpp"
 #include "Player.hpp"
+#include "Skeleton.hpp"
+#include "Soldier.hpp"
 
 
 using namespace std;
@@ -20,6 +25,9 @@ private:
     View gameView;
     View guiView;
     Map map;
+    long long points;
+    unsigned int level;
+    mt19937 rng;
 
     int x = 0;
     int y = 0;
@@ -33,6 +41,13 @@ private:
 
     // Player
     Player *player;
+    // Normal enemies
+    vector<Soldier*> soldiers;
+    // Special enemies
+    vector<Skeleton*> skeletons;
+
+    Vector2f getNextEnemyPos();
+    void loadEnemy(int type, bool special=false);
 
 public:
     GameStateLevel(Game *game);

@@ -23,9 +23,18 @@ GameStateLevel::GameStateLevel(Game *game)
     gameView.setCenter(centre);
     // the user is doing nothing
     this->actionState = ActionState::NONE;
-
+    // Load player
     this->player = new Player(Vector2f(Vector2i(Game::WIN_WIDTH,
                                                 Game::WIN_HEIGHT) / 2));
+    // Setup points & level
+    this->level = 1;
+    this->points = 0;
+    // enemies
+    this->rng.seed(random_device()());
+    for (int i = 0; i < (int) this->level * 4; i++)
+        this->loadEnemy(i);
+    for (int i = 0; i < (int) this->level * 2; i++)
+        this->loadEnemy(0, true);
 }
 
 void GameStateLevel::draw(const Time dt)
@@ -38,18 +47,44 @@ void GameStateLevel::draw(const Time dt)
     this->game->window.setView(this->gameView);
     map.draw(this->game->window, dt.asSeconds());
 
+    // Draw player
     this->game->window.draw(*this->player->getSprite());
+    // Draw enemies
+    for (int i = 0; i < (int) this->soldiers.size(); i++)
+        this->game->window.draw(*this->soldiers.at(i)->getSprite());
+    for (int i = 0; i < (int) this->skeletons.size(); i++)
+        this->game->window.draw(*this->skeletons.at(i)->getSprite());
+    // Draw bullets
     for (auto b : this->player->bullets)
         this->game->window.draw(*b.getShape());
 }
 
 void GameStateLevel::update(const Time dt)
 {
+    // (player is played on handle input)
+    // Play soldiers
+    for (int i = 0; i < (int) this->soldiers.size(); i++)
+        this->soldiers.at(i)->play();
+    // Play skelletons
+    for (int i = 0; i < (int) this->skeletons.size(); i++)
+        this->skeletons.at(i)->play();
+    // Move player
     this->player->getSprite()->move(
         *this->player->getMovement() * dt.asSeconds());
     if (this->player->getAnimStop())
         this->player->stopAnimation();
+    // TODO: move soldiers
+    // TODO: move skeletons
+    
+    // Update player
     this->player->getSprite()->update(dt);
+    // Update soldier
+    for (int i = 0; i < (int) this->soldiers.size(); i++)
+        this->soldiers.at(i)->getSprite()->update(dt);
+    // Update skeletons
+    for (int i = 0; i < (int) this->skeletons.size(); i++)
+        this->skeletons.at(i)->getSprite()->update(dt);
+    // Check bullets
     this->player->checkBullets(this->game->window.getSize());
     for (int i = 0; i < (int) this->player->bullets.size(); i++)
         this->player->bullets.at(i).update();
@@ -57,14 +92,7 @@ void GameStateLevel::update(const Time dt)
 
 void GameStateLevel::handleInput()
 {
-    /*
-    std::cout << "Position: x:"
-              << this->player->getSprite()->getPosition().x
-              << " y: " << this->player->getSprite()->getPosition().y
-              << std::endl;
-    std::cout << this->game->window.getSize().x << " "
-              << this->game->window.getSize().y << std::endl;
-    */
+
     Event event;
     while (this->game->window.pollEvent(event)) {
         switch (event.type) {
@@ -160,6 +188,12 @@ void GameStateLevel::handleInput()
         fired = true;
     }
     if (Keyboard::isKeyPressed(Keyboard::Up)) {
+        std::cout << "Position: x:"
+                  << this->player->getSprite()->getPosition().x
+                  << " y: " << this->player->getSprite()->getPosition().y
+                  << std::endl;
+        std::cout << this->game->window.getSize().x << " "
+                  << this->game->window.getSize().y << std::endl;
         bullety = -1;
         fired = true;
     }
@@ -169,4 +203,36 @@ void GameStateLevel::handleInput()
     }
     if (fired)
         this->player->fireBullet({bulletx, bullety});
+}
+
+Vector2f GameStateLevel::getNextEnemyPos()
+{
+    std::uniform_int_distribution<std::mt19937::result_type> dist(0, 3);
+    std::uniform_int_distribution<std::mt19937::result_type> d0(438, 503);
+    std::uniform_int_distribution<std::mt19937::result_type> d1(150, 305);
+    std::uniform_int_distribution<std::mt19937::result_type> d2(409, 582);
+    std::uniform_int_distribution<std::mt19937::result_type> d3(170, 302);
+    switch ((int) dist(this->rng)) {
+    case 0:
+        return {(float) d0(this->rng), 25.f};
+    case 1:
+        return {845.f, (float) d1(this->rng)};
+    case 2:
+        return {(float) d2(this->rng), 410.f};
+    case 3:
+        return {140.f, (float) d3(this->rng)};
+    default:
+        return {this->game->window.getSize().x / 2.f,
+                this->game->window.getSize().y / 2.f};
+        break;
+    }
+}
+
+
+void GameStateLevel::loadEnemy(int type, bool special)
+{
+    if (special)
+        this->skeletons.push_back(new Skeleton(this->getNextEnemyPos()));
+    else
+        this->soldiers.push_back(new Soldier(this->getNextEnemyPos(), type));
 }

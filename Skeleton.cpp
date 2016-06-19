@@ -21,3 +21,7 @@ Skeleton::Skeleton(Vector2f initialPos):Unit(initialPos)
     this->speed = 60.f;
 }
 
+int Skeleton::getPoints()
+{
+    return 60;
+}

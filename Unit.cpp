@@ -17,6 +17,11 @@ void Unit::updateSpeed(float s)
     this->speed = s;
 }
 
+Vector2f Unit::getPosition()
+{
+    return this->sprite->getPosition();
+}
+
 SpriteAnimation *Unit::getAnimationUp()
 {
     return &this->up;
@@ -75,4 +80,9 @@ bool Unit::getAnimStop()
 void Unit::setAnimStop(bool stop)
 {
     this->animStop = stop;
+}
+
+int Unit::getPoints()
+{
+    return 0;
 }

@@ -27,6 +27,8 @@ public:
     void changeAnimation(SpriteAnimation *animation);
     /* Updates the speed of the player **/
     void updateSpeed(float s);
+    /* Get position */
+    Vector2f getPosition();
     /** Gets the animations **/
     SpriteAnimation *getAnimationUp();
     SpriteAnimation *getAnimationDown();
@@ -46,6 +48,8 @@ public:
     Vector2f *getMovement();
     bool getAnimStop();
     void setAnimStop(bool stop);
+    /** Get the points for defeating this unit **/
+    virtual int getPoints();
 };
 
 

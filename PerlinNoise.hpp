@@ -25,7 +25,7 @@ public:
 
     PerlinNoise();
     
-    /** Geneates a random value in case of failure **/
+    /** Geneates a random value in case of failure (from and to inclusive)**/
     int randomValue(int from, int to);
     
     /** Given an 2D array of widht x heigh (perlin) generates Perlin Noise **/
