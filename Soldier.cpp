@@ -12,7 +12,7 @@ Soldier::Soldier(Vector2f initialPos, int variant):Unit(initialPos)
         break;
     case 2:
         this->texture.loadFromFile("media/soldier3.png");
-        this->speed = 70.f;
+        this->speed = 55.f;
         break;
     case 0: default:
         this->texture.loadFromFile("media/soldier.png");
