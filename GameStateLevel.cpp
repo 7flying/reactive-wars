@@ -15,6 +15,8 @@ GameStateLevel::GameStateLevel(Game *game)
 
     // initialise zoom to 1
     this->zoomLevel = 1.0f;
+    this->zoomLevel *= 0.5f;
+    this->gameView.zoom(0.5f);
     // centre the camera
     sf::Vector2f centre(this->map.width, this->map.height * 0.5);
     centre *= float(this->map.tileSize);
@@ -46,10 +48,19 @@ void GameStateLevel::update(const Time dt)
     if (this->player->getAnimStop())
         this->player->stopAnimation();
     this->player->getSprite()->update(dt);
+    for (auto b : this->player->bullets){
+        b.update();
+    }
 }
 
 void GameStateLevel::handleInput()
 {
+    std::cout << "Position: x:"
+              << this->player->getSprite()->getPosition().x
+              << " y: " << this->player->getSprite()->getPosition().y
+              << std::endl;
+    std::cout << this->game->window.getSize().x << " "
+              << this->game->window.getSize().y << std::endl;
     Event event;
     while (this->game->window.pollEvent(event)) {
         switch (event.type) {
@@ -103,12 +114,11 @@ void GameStateLevel::handleInput()
             gameView.setSize(event.size.width, event.size.height);
             gameView.zoom(zoomLevel);
             break;
-            /* Sprite movement */
-            
         default:
             break;
         }
     }
+    // Sprite movement
     bool stopAnim = true;
     this->player->getMovement()->x = 0;
     this->player->getMovement()->y = 0;
@@ -134,4 +144,25 @@ void GameStateLevel::handleInput()
     }
     this->player->setAnimStop(stopAnim);
     this->player->play();
+    // Check if new bullets are fired
+    int bulletx = 1, bullety = 1;
+    bool fired = false;
+    if (Keyboard::isKeyPressed(Keyboard::Left)) {
+        bulletx = -1;
+        fired = true;
+    }
+    if (Keyboard::isKeyPressed(Keyboard::Right)) {
+        bulletx = 1;
+        fired = true;
+    }
+    if (Keyboard::isKeyPressed(Keyboard::Up)) {
+        bullety = -1;
+        fired = true;
+    }
+    if (Keyboard::isKeyPressed(Keyboard::Down)) {
+        bullety = 1;
+        fired = true;
+    }
+    if (fired)
+        this->player->fireBullet({bulletx, bullety});
 }

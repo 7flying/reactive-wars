@@ -1,8 +1,8 @@
 
 PROG=reactive-wars
 SRCS=main.cpp Character.cpp CharacterClass.cpp Else.cpp FontManager.cpp \
-	PerlinNoise.cpp SpriteAnimation.cpp AnimatedSprite.cpp Unit.cpp Player.cpp \
-	Skeleton.cpp Soldier.cpp \
+	PerlinNoise.cpp SpriteAnimation.cpp AnimatedSprite.cpp Bullet.cpp \
+	Unit.cpp Player.cpp  Skeleton.cpp Soldier.cpp \
 	TextureManager.cpp AnimationHandler.cpp Tile.cpp Map.cpp \
 	Game.cpp GameStateInit.cpp GameStateLevel.cpp Mage.cpp Stats.cpp
 LIB=/usr/local/SFML-2.3.2/lib

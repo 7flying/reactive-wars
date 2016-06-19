@@ -1,10 +1,12 @@
 #ifndef UNIT_HPP
 #define UNIT_HPP
 
+#include <vector>
 #include <SFML/Graphics.hpp>
 #include "SpriteAnimation.hpp"
 #include "AnimatedSprite.hpp"
 
+using namespace std;
 using namespace sf;
 
 

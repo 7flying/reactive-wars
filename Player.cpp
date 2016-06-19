@@ -22,3 +22,29 @@ Player::Player(Vector2f initialPos):Unit(initialPos)
 }
 
 
+void Player::fireBullet(Vector2i direction)
+{
+    this->bullets.push_back(Bullet(this->sprite->getPosition().x,
+                                   this->sprite->getPosition().y,
+                                   this->sprite->getPosition(),
+                                   {Bullet::ABS_VELOCITY * direction.x,
+                                           Bullet::ABS_VELOCITY * direction.y}));
+}
+
+Vector2i Player::getDirection()
+{
+    int x = 1, y = 1;
+    if (this->sprite->getPosition().x < 0)
+        x = -1;
+    if (this->sprite->getPosition().y < 0)
+        y = -1;
+    return {x, y};
+}
+
+void Player::checkBullets(Vector2i window)
+{
+    this->bullets.erase(remove_if(begin(this->bullets), end(this->bullets),
+                                  [&window](const Bullet &mbullet){
+                                      return mbullet.checkOutOfWindow(window);
+                                  }), end(this->bullets));
+}
