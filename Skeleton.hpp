@@ -11,6 +11,7 @@ class Skeleton: public Unit {
 public:
     Skeleton(Vector2f initialPos);
     virtual int getPoints();
+    virtual Vector2f getSize();
 };
 
 #endif // SKELETON_HPP

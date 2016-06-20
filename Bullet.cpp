@@ -26,8 +26,3 @@ bool Bullet::checkOutOfWindow(Vector2u window) const
         return true;
     return false;
 }
-
-RectangleShape *Bullet::getShape()
-{
-    return &this->shape;
-}

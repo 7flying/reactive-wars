@@ -18,6 +18,7 @@ private:
 public:
     vector<Bullet> bullets;
     Player(Vector2f initialPos);
+    virtual Vector2f getSize();
     /** Checks if bullets have to be deleted **/
     void checkBullets(Vector2u window);
     /** Fires a bullet **/

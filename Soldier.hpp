@@ -12,8 +12,9 @@ private:
 
 public:
     Soldier(Vector2f initialPos, int variant);
-    int getVariant();
+    virtual Vector2f getSize();
     virtual int getPoints();
+    int getVariant() { return this->variant; }
 };
 
 #endif // SOLDIER_HPP

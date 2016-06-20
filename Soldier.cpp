@@ -19,24 +19,24 @@ Soldier::Soldier(Vector2f initialPos, int variant):Unit(initialPos)
         this->speed = 40.f;
         break;
     }
-    this->down.setSpriteSheet(texture);
-    this->left.setSpriteSheet(texture);
-    this->right.setSpriteSheet(texture);
-    this->up.setSpriteSheet(texture);
+    this->an_down.setSpriteSheet(texture);
+    this->an_left.setSpriteSheet(texture);
+    this->an_right.setSpriteSheet(texture);
+    this->an_up.setSpriteSheet(texture);
     for (int i = 224; i > 0; i-= 32) {
-        this->down.addFrame(IntRect(i, 0, 32, 32));
-        this->left.addFrame(IntRect(i, 32, 32, 32));
-        this->right.addFrame(IntRect(i, 64, 32, 32));
-        this->up.addFrame(IntRect(i, 96, 32, 32));
+        this->an_down.addFrame(IntRect(i, 0, 32, 32));
+        this->an_left.addFrame(IntRect(i, 32, 32, 32));
+        this->an_right.addFrame(IntRect(i, 64, 32, 32));
+        this->an_up.addFrame(IntRect(i, 96, 32, 32));
     }
 
-    this->current = &this->up;
+    this->current = &this->an_up;
     this->movement = new Vector2f(0.f, 0.f);
 }
 
-int Soldier::getVariant()
+Vector2f Soldier::getSize()
 {
-    return this->variant;
+    return {32.f, 32.f};
 }
 
 int Soldier::getPoints()

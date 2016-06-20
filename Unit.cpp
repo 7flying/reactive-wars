@@ -17,35 +17,6 @@ void Unit::updateSpeed(float s)
     this->speed = s;
 }
 
-Vector2f Unit::getPosition()
-{
-    return this->sprite->getPosition();
-}
-
-SpriteAnimation *Unit::getAnimationUp()
-{
-    return &this->up;
-}
-
-SpriteAnimation *Unit::getAnimationDown()
-{
-    return &this->down;
-}
-
-SpriteAnimation *Unit::getAnimationLeft()
-{
-    return &this->left;
-}
-
-SpriteAnimation *Unit::getAnimationRight()
-{
-    return &this->right;
-}
-
-AnimatedSprite *Unit::getSprite()
-{
-    return this->sprite;
-}
 
 void Unit::stopAnimation()
 {
@@ -57,24 +28,9 @@ void Unit::play()
     this->sprite->play(*this->current);
 }
 
-float Unit::getSpeed()
-{
-    return this->speed;
-}
-
 void Unit::setSpeed(float speed)
 {
     this->speed = speed;
-}
-
-Vector2f *Unit::getMovement()
-{
-    return this->movement;
-}
-
-bool Unit::getAnimStop()
-{
-    return this->animStop;
 }
 
 void Unit::setAnimStop(bool stop)
@@ -85,4 +41,9 @@ void Unit::setAnimStop(bool stop)
 int Unit::getPoints()
 {
     return 0;
+}
+
+Vector2f Unit::getSize()
+{
+    return {0.f, 0.f};
 }

@@ -13,7 +13,7 @@ using namespace sf;
 class Unit {
 
 protected:
-    SpriteAnimation up, down, left, right;
+    SpriteAnimation an_up, an_down, an_left, an_right;
     SpriteAnimation *current;
     Texture texture;
     AnimatedSprite *sprite;
@@ -28,28 +28,38 @@ public:
     /* Updates the speed of the player **/
     void updateSpeed(float s);
     /* Get position */
-    Vector2f getPosition();
+    Vector2f getPosition() { return this->sprite->getPosition(); }
     /** Gets the animations **/
-    SpriteAnimation *getAnimationUp();
-    SpriteAnimation *getAnimationDown();
-    SpriteAnimation *getAnimationLeft();
-    SpriteAnimation *getAnimationRight();
+    SpriteAnimation *getAnimationUp() { return &this->an_up; }
+    SpriteAnimation *getAnimationDown() { return &this->an_down; }
+    SpriteAnimation *getAnimationLeft() { return &this->an_left; }
+    SpriteAnimation *getAnimationRight() { return &this->an_right; }
     /** Gets the sprite **/
-    AnimatedSprite *getSprite();
+    AnimatedSprite *getSprite(){ return this->sprite; }
     /** Stops playing the animation **/
     void stopAnimation();
     /** Plays the animation **/
     void play();
     /** Gets the player's speed **/
-    float getSpeed();
+    float getSpeed(){ return this->speed; }
     /** Sets the player's speed **/
     void setSpeed(float speed);
     /** Get movement **/
-    Vector2f *getMovement();
-    bool getAnimStop();
+    Vector2f *getMovement() { return this->movement; }
+    bool getAnimStop() { return this->animStop; }
     void setAnimStop(bool stop);
     /** Get the points for defeating this unit **/
     virtual int getPoints();
+    /** Gets the size of the sides of the sprite **/
+    virtual Vector2f getSize();
+
+    /** Methods for collisions **/
+    float x() { return this->sprite->getPosition().x; }
+    float y() { return this->sprite->getPosition().y; }
+    float left() { return this->x() - this->getSize().x / 2.f; }
+    float right() { return this->x() + this->getSize().x / 2.f; }
+    float top() { return this->y() - this->getSize().y / 2.f; }
+    float bottom() { return this->y() + this->getSize().y / 2.f; }
 };
 
 
