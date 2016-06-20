@@ -343,6 +343,30 @@ void GameStateLevel::testCollisions()
         this->updatePoints(this->skeletons.at(del_skeleton.at(i))->getPoints());
         this->skeletons.erase(this->skeletons.begin() + del_skeleton.at(i));
     }
+    // Collisions with player
+    bool gameover = false;
+    int i = 0;
+    while (!gameover && i < (int) this->soldiers.size()) {
+        if (!isIntersecting(*this->soldiers.at(i), *this->player))
+            i++;
+        else
+            gameover = true;
+    }
+    if (!gameover) {
+        i = 0;
+        while (!gameover && i < (int) this->skeletons.size()) {
+            if (!isIntersecting(*this->skeletons.at(i), *this->player))
+                i++;
+            else
+                gameover = true;
+        }
+    }
+    if (gameover) {
+        this->soldiers.clear();
+        this->skeletons.clear();
+        cout << "GAME OVER" << endl;
+        // TODO properly delete player
+    }
 }
 
 void GameStateLevel::updatePoints(int points)
