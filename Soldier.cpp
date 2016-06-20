@@ -57,3 +57,33 @@ int Soldier::getPoints()
         return 0;
     }
 }
+
+Vector2f Soldier::getDesviation(mt19937 &rng)
+{
+    std::uniform_int_distribution<std::mt19937::result_type> d0(5, 35);
+    std::uniform_int_distribution<std::mt19937::result_type> d1(5, 25);
+    std::uniform_int_distribution<std::mt19937::result_type> d2(5, 20);
+    switch (this->variant) {
+    case 0:
+        return {(float) d0(rng), (float) d0(rng)};
+    case 1:
+        return {(float) d1(rng), (float) d1(rng)};
+    case 2:
+        return {(float) d2(rng), (float) d2(rng)};
+    default:
+        return {(float) d0(rng), (float) d0(rng)};
+        break;
+    }
+}
+
+void Soldier::addDesviation(Vector2f &desviation, Vector2f *direction)
+{
+    if (direction->x < 0)
+        this->getMovement()->x -= desviation.x;
+    else
+        this->getMovement()->x += desviation.x;
+    if (direction->y < 0)
+        this->getMovement()->y -= desviation.y;
+    else
+        this->getMovement()->y += desviation.y;
+}

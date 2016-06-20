@@ -112,6 +112,8 @@ void GameStateLevel::update(const Time dt)
     for (int i = 0; i < (int) this->soldiers.size(); i++) {
         Vector2f direction = this->getDirectionToUnit(this->soldiers.at(i),
                                                       this->player);
+        Vector2f desviation = this->soldiers.at(i)->getDesviation(this->rng);
+        this->soldiers.at(i)->addDesviation(desviation, &direction);
         this->updateDirectionUnit(this->soldiers.at(i), direction);
         this->soldiers.at(i)->getSprite()->move(
             *this->soldiers.at(i)->getMovement() * dt.asSeconds());

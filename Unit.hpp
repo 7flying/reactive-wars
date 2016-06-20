@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <iostream>
+#include <random>
+#include <utility>
 #include <SFML/Graphics.hpp>
 #include "SpriteAnimation.hpp"
 #include "AnimatedSprite.hpp"

@@ -16,7 +16,8 @@ public:
     virtual Vector2f getSize();
     virtual int getPoints();
     int getVariant() { return this->variant; }
-
+    Vector2f getDesviation(mt19937 &rng);
+    void addDesviation(Vector2f &desviation,  Vector2f *direction);
     bool del = false;
 };
 
