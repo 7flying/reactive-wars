@@ -139,7 +139,7 @@ void GameStateLevel::update(const Time dt)
         this->player->bullets.at(i).update();
 
     // Test collisions
-    this->testCollisions();
+    this->testCollisions(dt);
 }
 
 void GameStateLevel::handleInput()
@@ -333,7 +333,7 @@ void GameStateLevel::updateDirectionUnit(Unit *unit, Vector2f &direction)
     }
 }
 
-void GameStateLevel::testCollisions()
+void GameStateLevel::testCollisions(const Time dt)
 {
     int del_bullet;
     // Soldiers with bullets
@@ -407,7 +407,17 @@ void GameStateLevel::testCollisions()
         else
             gameover = true;
     }
-    
+    // collisions between enemies
+    i = 1;
+    for (i = 0; i < (int) this->soldiers.size() -1; i++) {
+        if (isIntersecting(*this->soldiers.at(i), *this->soldiers.at(i + 1))) {
+            // push in oposite directions
+            this->soldiers.at(i+1)->getMovement()->x *= -1.f;
+            this->soldiers.at(i+1)->getMovement()->y *= -1.f;
+            this->soldiers.at(i+1)->getSprite()->move(
+                *this->soldiers.at(i+1)->getMovement() * dt.asSeconds());
+        }
+    }
     if (!gameover) {
         i = 0;
         while (!gameover && i < (int) this->skeletons.size()) {
@@ -434,7 +444,7 @@ void GameStateLevel::levelUp()
 {
     this->level += 1;
     this->map.proceduralMap(Map::WIDTH, Map::HEIGHT,
-                                        this->game->tileAtlas);
+                            this->game->tileAtlas);
     this->player->bullets.clear();
 }
 

@@ -65,7 +65,7 @@ private:
     void loadEnemy(int type, bool special=false);
     Vector2f getDirectionToUnit(Unit *source, Unit *destination);
     void updateDirectionUnit(Unit *unit, Vector2f &direction);
-    void testCollisions();
+    void testCollisions(const Time dt);
     void levelUp();
 public:
     GameStateLevel(Game *game);
