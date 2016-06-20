@@ -15,11 +15,19 @@ GameStateLevel::GameStateLevel(Game *game)
     if (!this->guiFont->loadFromFile("media/GameBoy.ttf"))
         cout << " FAILED TO LOAD FONT!" << endl;
     else {
+        // Points
         this->textPoints = new Text();
         this->textPoints->setFont(*this->guiFont);
         this->textPoints->setCharacterSize(GameStateLevel::FONT_SIZE_PIXELS);
         this->textPoints->setColor(Color::Black);
         this->textPoints->move({15.f, 15.f});
+        // Level
+        this->textLevel = new Text();
+        this->textLevel->setFont(*this->guiFont);
+        this->textLevel->setCharacterSize(GameStateLevel::FONT_SIZE_PIXELS);
+        this->textLevel->setColor(Color::Black);
+        this->textLevel->move({15.f,
+                    15.f+ GameStateLevel::FONT_SIZE_PIXELS + 3.f});
     }
     
     this->rng.seed(random_device()());
@@ -54,6 +62,9 @@ void GameStateLevel::draw(const Time dt)
     // Draw Points
     this->textPoints->setString(this->sPoints + to_string(this->points));
     this->game->window.draw(*this->textPoints);
+    // Draw Level
+    this->textLevel->setString(this->sLevel + to_string(this->level));
+    this->game->window.draw(*this->textLevel);
     // Draw map
     this->game->window.setView(this->gameView);
     map.draw(this->game->window, dt.asSeconds());
@@ -401,8 +412,17 @@ void GameStateLevel::testCollisions()
         // TODO properly delete player
         this->gameOver = true;
     }
-    if (!this->gameOver && this->soldiers.size() == 0)
+    if (!this->gameOver && this->soldiers.size() == 0)  {
         this->generateEnemies();
+        this->levelUp();
+    }
+}
+
+void GameStateLevel::levelUp()
+{
+    this->level += 1;
+    this->map.proceduralMap(Map::WIDTH, Map::HEIGHT,
+                                        this->game->tileAtlas);
 }
 
 void GameStateLevel::updatePoints(int points)

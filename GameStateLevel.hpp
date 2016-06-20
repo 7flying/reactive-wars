@@ -62,7 +62,7 @@ private:
     Vector2f getDirectionToUnit(Unit *source, Unit *destination);
     void updateDirectionUnit(Unit *unit, Vector2f &direction);
     void testCollisions();
-
+    void levelUp();
 public:
     GameStateLevel(Game *game);
 
