@@ -21,6 +21,11 @@ Player::Player(Vector2f initialPos):Unit(initialPos)
     this->speed = 80.f;
 }
 
+Player::~Player()
+{
+    std::cout << "Deleting player" << std::endl;
+}
+
 Vector2f Player::getSize()
 {
     return {32.f, 32.f};

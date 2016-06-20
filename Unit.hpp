@@ -2,6 +2,7 @@
 #define UNIT_HPP
 
 #include <vector>
+#include <iostream>
 #include <SFML/Graphics.hpp>
 #include "SpriteAnimation.hpp"
 #include "AnimatedSprite.hpp"
@@ -23,6 +24,7 @@ protected:
 
 public:
     Unit(Vector2f initialPos);
+    virtual ~Unit();
     /* Changes the animation */
     void changeAnimation(SpriteAnimation *animation);
     /* Updates the speed of the player **/

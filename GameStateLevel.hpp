@@ -28,7 +28,16 @@ private:
     Map map;
     long long points;
     unsigned int level;
+    bool mapLoaded = false;
+    bool gameOver = false;
     mt19937 rng;
+
+    Font *guiFont;
+    const static int FONT_SIZE_PIXELS = 8;
+    string sPoints = "Points: ";
+    string sLevel = "Level: ";
+    Text *textPoints;
+    Text *textLevel;
 
     int x = 0;
     int y = 0;
@@ -48,6 +57,7 @@ private:
     vector<Skeleton*> skeletons;
 
     Vector2f getNextEnemyPos();
+    void generateEnemies();
     void loadEnemy(int type, bool special=false);
     Vector2f getDirectionToUnit(Unit *source, Unit *destination);
     void updateDirectionUnit(Unit *unit, Vector2f &direction);

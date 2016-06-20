@@ -11,8 +11,20 @@ GameStateLevel::GameStateLevel(Game *game)
     this->gameView.setCenter(pos);
     this->guiView.setCenter(pos);
 
+    this->guiFont = new Font();
+    if (!this->guiFont->loadFromFile("media/GameBoy.ttf"))
+        cout << " FAILED TO LOAD FONT!" << endl;
+    else {
+        this->textPoints = new Text();
+        this->textPoints->setFont(*this->guiFont);
+        this->textPoints->setCharacterSize(GameStateLevel::FONT_SIZE_PIXELS);
+        this->textPoints->setColor(Color::Black);
+        this->textPoints->move({15.f, 15.f});
+    }
+    
+    this->rng.seed(random_device()());
     this->map = Map("city_map.dat", Map::WIDTH, Map::HEIGHT, game->tileAtlas);
-
+    this->mapLoaded = true;
     // initialise zoom to 1
     this->zoomLevel = 1.0f;
     this->zoomLevel *= 0.5f;
@@ -29,21 +41,20 @@ GameStateLevel::GameStateLevel(Game *game)
     // Setup points & level
     this->level = 1;
     this->points = 0;
-    // enemies
-    this->rng.seed(random_device()());
-    for (int i = 0; i < (int) this->level * 4; i++)
-        this->loadEnemy(i);
-    for (int i = 0; i < (int) this->level * 2; i++)
-        this->loadEnemy(0, true);
+
+    this->generateEnemies();
 }
 
 void GameStateLevel::draw(const Time dt)
 {
     this->game->window.clear(Color::Black);
-
+    
     this->game->window.setView(this->guiView);
     this->game->window.draw(this->game->background);
-
+    // Draw Points
+    this->textPoints->setString(this->sPoints + to_string(this->points));
+    this->game->window.draw(*this->textPoints);
+    // Draw map
     this->game->window.setView(this->gameView);
     map.draw(this->game->window, dt.asSeconds());
 
@@ -60,7 +71,7 @@ void GameStateLevel::draw(const Time dt)
 }
 
 void GameStateLevel::update(const Time dt)
-{
+{        
     // Play player
     this->player->play();
     // Play soldiers
@@ -231,6 +242,7 @@ void GameStateLevel::handleInput()
     }
     if (fired)
         this->player->fireBullet({bulletx, bullety});
+
 }
 
 Vector2f GameStateLevel::getNextEnemyPos()
@@ -253,6 +265,16 @@ Vector2f GameStateLevel::getNextEnemyPos()
         return {this->game->window.getSize().x / 2.f,
                 this->game->window.getSize().y / 2.f};
         break;
+    }
+}
+
+void GameStateLevel::generateEnemies()
+{
+    if (this->mapLoaded) {
+        for (int i = 0; i < (int) this->level * 4; i++)
+            this->loadEnemy(i);
+        //for (int i = 0; i < (int) this->level * 2; i++)
+        //    this->loadEnemy(0, true);
     }
 }
 
@@ -291,8 +313,6 @@ void GameStateLevel::updateDirectionUnit(Unit *unit, Vector2f &direction)
 void GameStateLevel::testCollisions()
 {
     int del_bullet;
-    vector<int> del_soldier;
-    vector<int> del_skeleton;
     // Soldiers with bullets
     for (int i = 0; i < (int) this->soldiers.size(); i++) {
         int j = 0;
@@ -301,7 +321,7 @@ void GameStateLevel::testCollisions()
         while (!found && j < bulletsSize) {
             if (isIntersecting(*this->soldiers.at(i),
                                this->player->bullets.at(j))) {
-                del_soldier.push_back(i);
+                this->soldiers.at(i)->del = true;
                 del_bullet = j;
                 found = true;
             } else {
@@ -314,9 +334,15 @@ void GameStateLevel::testCollisions()
         }
     }
     // Delete soldiers & compute points
-    for (int i = 0; i < (int) del_soldier.size(); i++) {
-        this->updatePoints(this->soldiers.at(del_soldier.at(i))->getPoints());
-        this->soldiers.erase(this->soldiers.begin() + del_soldier.at(i));
+    int check = 0;
+    while (check < (int) this->soldiers.size()) {
+        if (this->soldiers.at(check)->del) {
+            this->updatePoints(this->soldiers.at(check)->getPoints());
+            this->soldiers.erase(this->soldiers.begin() + check);
+            check = 0;
+        } else {
+            check++;
+        }
     }
     // Skeletons with bullets
     for (int i = 0; i < (int) this->skeletons.size(); i++) {
@@ -326,8 +352,8 @@ void GameStateLevel::testCollisions()
         while (!found && j < bulletsSize) {
             if (isIntersecting(*this->skeletons.at(i),
                                this->player->bullets.at(j))) {
+                this->skeletons.at(i)->del = true;
                 del_bullet = j;
-                del_skeleton.push_back(i);
                 found = true;
             } else {
                 j++;
@@ -339,9 +365,15 @@ void GameStateLevel::testCollisions()
         }
     }
     // Delete skeletons & compute points
-    for (int i = 0; i < (int) del_skeleton.size(); i++) {
-        this->updatePoints(this->skeletons.at(del_skeleton.at(i))->getPoints());
-        this->skeletons.erase(this->skeletons.begin() + del_skeleton.at(i));
+    check = 0;
+    while (check < (int) this->soldiers.size()) {
+        if (this->soldiers.at(check)->del) {
+            this->updatePoints(this->skeletons.at(check)->getPoints());
+            this->skeletons.erase(this->skeletons.begin() + check);
+            check = 0;
+        } else {
+            check++;
+        }
     }
     // Collisions with player
     bool gameover = false;
@@ -352,6 +384,7 @@ void GameStateLevel::testCollisions()
         else
             gameover = true;
     }
+    
     if (!gameover) {
         i = 0;
         while (!gameover && i < (int) this->skeletons.size()) {
@@ -366,7 +399,10 @@ void GameStateLevel::testCollisions()
         this->skeletons.clear();
         cout << "GAME OVER" << endl;
         // TODO properly delete player
+        this->gameOver = true;
     }
+    if (!this->gameOver && this->soldiers.size() == 0)
+        this->generateEnemies();
 }
 
 void GameStateLevel::updatePoints(int points)

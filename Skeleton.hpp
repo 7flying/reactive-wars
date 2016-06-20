@@ -12,6 +12,7 @@ public:
     Skeleton(Vector2f initialPos);
     virtual int getPoints();
     virtual Vector2f getSize();
+    bool del = false;
 };
 
 #endif // SKELETON_HPP

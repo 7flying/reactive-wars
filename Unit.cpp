@@ -7,6 +7,14 @@ Unit::Unit(Vector2f initialPos)
     this->sprite->setPosition(initialPos);
 }
 
+Unit::~Unit()
+{
+    delete current;
+    delete sprite;
+    delete movement;
+    std::cout << "Deleting unit" << std::endl;
+}
+
 void Unit::changeAnimation(SpriteAnimation *animation)
 {
     this->current = animation;

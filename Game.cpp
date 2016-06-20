@@ -12,7 +12,8 @@ Game::Game()
     this->loadTextures();
     this->loadTiles();
     // Create main window
-    this->window.create(VideoMode(800, 600), "Reactive Wars");
+    this->window.create(VideoMode(Game::WIN_WIDTH, Game::WIN_HEIGHT),
+                        "Reactive Wars");
     this->window.setFramerateLimit(60);
     this->background.setTexture(this->texman.getRef("background"));
 }

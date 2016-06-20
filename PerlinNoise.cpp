@@ -110,10 +110,6 @@ PerlinNoise::generatePerlinNoise(int width, int height, int octaveCount,
             }
         }
     }
-
-    std::cout << "MIN: " << min << std::endl;
-    std::cout << "MAX: " << max << std::endl;
-    std::cout << "AMP: " << totalAmplitude << std::endl;
     
     // normalise
     for (int i = 0; i < width; i++) {

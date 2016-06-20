@@ -34,6 +34,11 @@ Soldier::Soldier(Vector2f initialPos, int variant):Unit(initialPos)
     this->movement = new Vector2f(0.f, 0.f);
 }
 
+Soldier::~Soldier()
+{
+    std::cout << "Deleting soldier" << std::endl;
+}
+
 Vector2f Soldier::getSize()
 {
     return {32.f, 32.f};
