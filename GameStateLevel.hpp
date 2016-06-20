@@ -12,6 +12,7 @@
 #include "Player.hpp"
 #include "Skeleton.hpp"
 #include "Soldier.hpp"
+#include "Collisions.hpp"
 
 
 using namespace std;
@@ -50,6 +51,7 @@ private:
     void loadEnemy(int type, bool special=false);
     Vector2f getDirectionToUnit(Unit *source, Unit *destination);
     void updateDirectionUnit(Unit *unit, Vector2f &direction);
+    void testCollisions();
 
 public:
     GameStateLevel(Game *game);
@@ -57,6 +59,8 @@ public:
     virtual void draw(const Time dt);
     virtual void update(const Time dt);
     virtual void handleInput();
+    void updatePoints(int points);
+    long long getPoints() { return this->points; };
 };
 
 #endif // GAME_STATE_LEVEL_HPP

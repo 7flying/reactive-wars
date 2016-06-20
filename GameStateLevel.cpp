@@ -74,7 +74,7 @@ void GameStateLevel::update(const Time dt)
         *this->player->getMovement() * dt.asSeconds());
     if (this->player->getAnimStop())
         this->player->stopAnimation();
-    // TODO: move soldiers
+    // Move soldiers
     for (int i = 0; i < (int) this->soldiers.size(); i++) {
         Vector2f direction = this->getDirectionToUnit(this->soldiers.at(i),
                                                       this->player);
@@ -82,7 +82,7 @@ void GameStateLevel::update(const Time dt)
         this->soldiers.at(i)->getSprite()->move(
             *this->soldiers.at(i)->getMovement() * dt.asSeconds());
     }
-    // TODO: move skeletons
+    // Move skeletons
     for (int i = 0; i < (int) this->skeletons.size(); i++) {
         Vector2f direction = this->getDirectionToUnit(this->skeletons.at(i),
                                                       this->player);
@@ -103,6 +103,9 @@ void GameStateLevel::update(const Time dt)
     this->player->checkBullets(this->game->window.getSize());
     for (int i = 0; i < (int) this->player->bullets.size(); i++)
         this->player->bullets.at(i).update();
+
+    // Test collisions
+    this->testCollisions();
 }
 
 void GameStateLevel::handleInput()
@@ -211,12 +214,14 @@ void GameStateLevel::handleInput()
         fired = true;
     }
     if (Keyboard::isKeyPressed(Keyboard::Up)) {
-        std::cout << "Position: x:"
-                  << this->player->getSprite()->getPosition().x
-                  << " y: " << this->player->getSprite()->getPosition().y
-                  << std::endl;
-        std::cout << this->game->window.getSize().x << " "
-                  << this->game->window.getSize().y << std::endl;
+        /*
+          std::cout << "Position: x:"
+          << this->player->getSprite()->getPosition().x
+          << " y: " << this->player->getSprite()->getPosition().y
+          << std::endl;
+          std::cout << this->game->window.getSize().x << " "
+          << this->game->window.getSize().y << std::endl;
+        */
         bullety = -1;
         fired = true;
     }
@@ -281,4 +286,66 @@ void GameStateLevel::updateDirectionUnit(Unit *unit, Vector2f &direction)
         unit->changeAnimation(unit->getAnimationDown());
         unit->getMovement()->y += unit->getSpeed();
     }
+}
+
+void GameStateLevel::testCollisions()
+{
+    int del_bullet;
+    vector<int> del_soldier;
+    vector<int> del_skeleton;
+    // Soldiers with bullets
+    for (int i = 0; i < (int) this->soldiers.size(); i++) {
+        int j = 0;
+        bool found = false;
+        int bulletsSize = (int) this->player->bullets.size();
+        while (!found && j < bulletsSize) {
+            if (isIntersecting(*this->soldiers.at(i),
+                               this->player->bullets.at(j))) {
+                del_soldier.push_back(i);
+                del_bullet = j;
+                found = true;
+            } else {
+                j++;
+            }
+        }
+        if (found) {
+            this->player->bullets.erase(
+                this->player->bullets.begin() + del_bullet);
+        }
+    }
+    // Delete soldiers & compute points
+    for (int i = 0; i < (int) del_soldier.size(); i++) {
+        this->updatePoints(this->soldiers.at(del_soldier.at(i))->getPoints());
+        this->soldiers.erase(this->soldiers.begin() + del_soldier.at(i));
+    }
+    // Skeletons with bullets
+    for (int i = 0; i < (int) this->skeletons.size(); i++) {
+        int j = 0;
+        bool found = false;
+        int bulletsSize = (int) this->player->bullets.size();
+        while (!found && j < bulletsSize) {
+            if (isIntersecting(*this->skeletons.at(i),
+                               this->player->bullets.at(j))) {
+                del_bullet = j;
+                del_skeleton.push_back(i);
+                found = true;
+            } else {
+                j++;
+            }
+        }
+        if (found) {
+            this->player->bullets.erase(
+                this->player->bullets.begin() + del_bullet);
+        }
+    }
+    // Delete skeletons & compute points
+    for (int i = 0; i < (int) del_skeleton.size(); i++) {
+        this->updatePoints(this->skeletons.at(del_skeleton.at(i))->getPoints());
+        this->skeletons.erase(this->skeletons.begin() + del_skeleton.at(i));
+    }
+}
+
+void GameStateLevel::updatePoints(int points)
+{
+    this->points += points;
 }
