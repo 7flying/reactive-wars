@@ -56,7 +56,6 @@ GameStateLevel::GameStateLevel(Game *game)
     // Setup points & level
     this->level = 1;
     this->points = 0;
-
     this->generateEnemies();
 }
 
@@ -94,7 +93,7 @@ void GameStateLevel::draw(const Time dt)
 }
 
 void GameStateLevel::update(const Time dt)
-{        
+{
     // Play player
     this->player->play();
     // Play soldiers
@@ -103,6 +102,12 @@ void GameStateLevel::update(const Time dt)
     // Play skelletons
     for (int i = 0; i < (int) this->skeletons.size(); i++)
         this->skeletons.at(i)->play();
+    // check speed
+    changeSpeedByPos(this->player);
+    for (int i = 0; i < (int) this->soldiers.size(); i++)
+        changeSpeedByPos(this->soldiers.at(i));
+    for (int i = 0; i < (int) this->skeletons.size(); i++)
+        changeSpeedByPos(this->skeletons.at(i));
     // Move player
     this->player->getSprite()->move(
         *this->player->getMovement() * dt.asSeconds());
@@ -453,4 +458,54 @@ void GameStateLevel::levelUp()
 void GameStateLevel::updatePoints(int points)
 {
     this->points += points;
+}
+
+void GameStateLevel::changeSpeedByPos(Unit *unit)
+{
+    Vector2f pos = unit->getSprite()->getPosition();
+    if (((int) pos.x) % this->map.tileSize != 0) {
+        pos.x = (float) round(((int) pos.x) / this->map.tileSize);
+        pos.x *= this->map.tileSize;
+    }
+    if (((int) pos.y) % this->map.tileSize != 0) {
+        pos.y = (float) round((int) pos.y / this->map.tileSize);
+        pos.y *= this->map.tileSize;
+    }
+    if ((int) pos.x % this->map.tileSize == 0
+        && (int) pos.y / this->map.tileSize == 0)
+    {
+        if (this->map.tileProperty.count("x:" + to_string((int) pos.x)
+                                         + "y:" + to_string((int) pos.y)) > 0)
+        {
+            TileType temp = this->map.tileProperty.at(
+                "x:" + to_string((int) pos.x) + "y:" + to_string((int) pos.y));
+            cout << "reducing speed" << endl;
+            switch (temp) {
+            case TileType::GRASS:
+            case TileType::GRASS1:
+                unit->updateSpeed(unit->baseSpeed);
+                break;
+            case TileType::GRASS2:
+            case TileType::GRASS3:
+            case TileType::MOUNTAIN:
+                unit->updateSpeed(unit->baseSpeed - 10.f);
+                break;
+            case TileType::MOUNTAIN1:
+                unit->updateSpeed(unit->baseSpeed - 20.f);
+                break;
+            case TileType::WATER:
+                unit->updateSpeed(unit->baseSpeed - 25.f);
+                break;
+            case TileType::WATER1:
+                unit->updateSpeed(unit->baseSpeed - 30.f);
+                break;
+            case TileType::WATER2:
+                unit->updateSpeed(unit->baseSpeed - 35.f);
+                break;
+            default:
+                unit->updateSpeed(unit->baseSpeed);
+                break;
+            }
+        }
+    }
 }

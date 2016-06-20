@@ -19,6 +19,7 @@ Skeleton::Skeleton(Vector2f initialPos):Unit(initialPos)
     this->current = &this->an_up;
     this->movement = new Vector2f(0.f, 0.f);
     this->speed = 60.f;
+    this->baseSpeed = 60.f;
 }
 
 int Skeleton::getPoints()

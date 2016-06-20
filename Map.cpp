@@ -26,6 +26,7 @@ void Map::proceduralMap(int width, int height, map<string, Tile> &tileAtlas)
     this->width = width;
     this->height = height;
     this->tiles.clear();
+    this->tileProperty.clear();
     // PerlinNoise pnoise;
     // Generate array for perlin noise
     float ** a_pnoise = new float*[height];
@@ -33,8 +34,8 @@ void Map::proceduralMap(int width, int height, map<string, Tile> &tileAtlas)
         a_pnoise[i] = new float[width];
     this->pnoise.generatePerlinNoise(width, height, 5, 0.7f, a_pnoise); // 5, 0.7 | 5, 0.3
     // Map each value to a tile type
-    for (int i = 0; i < width; i++) {
-        for (int j = 0; j < height; j++) {
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
             this->resources.push_back(255);
             this->selected.push_back(0);
             double sec = round(a_pnoise[i][j] * (TILE_NUM - 1));
@@ -54,42 +55,61 @@ void Map::proceduralMap(int width, int height, map<string, Tile> &tileAtlas)
                 sec = sec / (TILE_NUM - 1);
                 std::cout << sec << std::endl;
             }
+            TileType tempType = TileType::MOUNTAIN;
             switch((int) sec) {
             case 0:
+                tempType = TileType::GRASS;
                 this->tiles.push_back(tileAtlas.at("grass"));
                 break;
             case 1:
+                tempType = TileType::GRASS1;
                 this->tiles.push_back(tileAtlas.at("grass1"));
                 break;
             case 2:
+                tempType = TileType::GRASS2;
                 this->tiles.push_back(tileAtlas.at("grass2"));
                 break;
             case 3:
+                tempType = TileType::GRASS3;
                 this->tiles.push_back(tileAtlas.at("grass3"));
                 break;
             case 4:
+                tempType = TileType::MOUNTAIN;
                 this->tiles.push_back(tileAtlas.at("moun"));
                 break;
             case 5:
+                tempType = TileType::MOUNTAIN1;
                 this->tiles.push_back(tileAtlas.at("moun1"));
                 break;
             case 6:
+                tempType = TileType::WATER;
                 this->tiles.push_back(tileAtlas.at("water"));
                 break;
             case 7:
+                tempType = TileType::WATER1;
                 this->tiles.push_back(tileAtlas.at("water1"));
                 break;
             case 8:
+                tempType = TileType::WATER2;
                 this->tiles.push_back(tileAtlas.at("water2"));
                 break;
             default:
                 int temp = pnoise.randomValue(4, 5);
-                if (temp == 4)
+                if (temp == 4) {
+                    tempType = TileType::MOUNTAIN;
                     this->tiles.push_back(tileAtlas.at("moun"));
-                else
+                } else {
+                    tempType = TileType::MOUNTAIN1;
                     this->tiles.push_back(tileAtlas.at("moun1"));
+                }
                 break;
             }
+            Vector2f pos;
+            pos.x = (j - i) * this->tileSize + this->width * this->tileSize;
+            pos.y = (j + i) * this->tileSize * 0.5;
+            this->tileProperty["x:" + to_string(pos.x)
+                               + "y:" + to_string(pos.y)] = tempType;
+            
         }
         Tile &tile = this->tiles.back();
         tile.avoid = 0;
@@ -123,6 +143,7 @@ void Map::draw(RenderWindow &window, float dt)
             Vector2f pos;
             pos.x = (x - y) * this->tileSize + this->width * this->tileSize;
             pos.y = (x + y) * this->tileSize * 0.5;
+            //cout << "x: " << pos.x << "y: " << pos.y << endl;
             this->tiles[y * this->width + x].sprite.setPosition(pos);
             // Change the color if the tile is selected
             if (this->selected[y * this->width + x])

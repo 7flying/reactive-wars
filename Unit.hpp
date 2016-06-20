@@ -25,6 +25,8 @@ protected:
     bool animStop = false;
 
 public:
+    float baseSpeed;
+    
     Unit(Vector2f initialPos);
     virtual ~Unit();
     /* Changes the animation */

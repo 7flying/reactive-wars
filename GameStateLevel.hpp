@@ -6,6 +6,7 @@
 #include <random>
 #include <iostream>
 #include <utility>
+#include <math.h>
 #include "Game.hpp"
 #include "GameState.hpp"
 #include "Map.hpp"
@@ -67,6 +68,7 @@ private:
     void updateDirectionUnit(Unit *unit, Vector2f &direction);
     void testCollisions(const Time dt);
     void levelUp();
+    void changeSpeedByPos(Unit *unit);
 public:
     GameStateLevel(Game *game);
 

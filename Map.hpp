@@ -33,6 +33,7 @@ public:
     unsigned int tileSize, numSelected;
     unsigned int numRegions[1];
 
+    map<string, TileType> tileProperty;
     // 0 deselected, 1 selected, 2 invalid
     vector<char> selected;
 

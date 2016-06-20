@@ -19,6 +19,7 @@ Player::Player(Vector2f initialPos):Unit(initialPos)
     this->current = &this->an_up;
     this->movement = new Vector2f(0.f, 0.f);
     this->speed = 80.f;
+    this->baseSpeed = 80.f;
 }
 
 Player::~Player()
