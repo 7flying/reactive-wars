@@ -28,6 +28,13 @@ GameStateLevel::GameStateLevel(Game *game)
         this->textLevel->setColor(Color::Black);
         this->textLevel->move({15.f,
                     15.f+ GameStateLevel::FONT_SIZE_PIXELS + 3.f});
+        // Game over font
+        this->textGameOver = new Text();
+        this->textGameOver->setFont(*this->guiFont);
+        this->textGameOver->setCharacterSize(GameStateLevel::LAR_FONT_SIZE_PIXELS);
+        this->textGameOver->setColor(Color::Black);
+        this->textGameOver->move(Game::WIN_WIDTH / 4 + 10.f,
+                                 50.f + GameStateLevel::FONT_SIZE_PIXELS * 2.f);
     }
     
     this->rng.seed(random_device()());
@@ -68,6 +75,11 @@ void GameStateLevel::draw(const Time dt)
     // Draw map
     this->game->window.setView(this->gameView);
     map.draw(this->game->window, dt.asSeconds());
+    // check game over
+    if (this->gameOver) {
+        this->textGameOver->setString(this->sGameOver);
+        this->game->window.draw(*this->textGameOver);
+    }
 
     // Draw player
     this->game->window.draw(*this->player->getSprite());
@@ -251,7 +263,7 @@ void GameStateLevel::handleInput()
         bullety = 1;
         fired = true;
     }
-    if (fired)
+    if (fired && !this->gameOver)
         this->player->fireBullet({bulletx, bullety});
 
 }
@@ -423,6 +435,7 @@ void GameStateLevel::levelUp()
     this->level += 1;
     this->map.proceduralMap(Map::WIDTH, Map::HEIGHT,
                                         this->game->tileAtlas);
+    this->player->bullets.clear();
 }
 
 void GameStateLevel::updatePoints(int points)

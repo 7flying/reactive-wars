@@ -34,10 +34,14 @@ private:
 
     Font *guiFont;
     const static int FONT_SIZE_PIXELS = 8;
+    const static int MED_FONT_SIZE_PIXELS = FONT_SIZE_PIXELS * 4;
+    const static int LAR_FONT_SIZE_PIXELS = MED_FONT_SIZE_PIXELS * 2;
     string sPoints = "Points: ";
     string sLevel = "Level: ";
+    string sGameOver = "Game Over";
     Text *textPoints;
     Text *textLevel;
+    Text *textGameOver;
 
     int x = 0;
     int y = 0;
