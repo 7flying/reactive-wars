@@ -4,7 +4,7 @@ Twin stick isometric shooter with procedural map generation developed for
 *Multimedia and videogames* subject. 
 
 - The procedural map generation is made with [Perlin Noise](https://en.wikipedia.org/wiki/Perlin_noise).
-- Uses SMFL.
+- Uses SFML.
 
 ![Screenshot](https://github.com/7flying/reactive-wars/raw/master/screenshots/00-gameplay.png)
 
