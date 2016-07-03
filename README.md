@@ -6,7 +6,7 @@ Twin stick isometric shooter with procedural map generation developed for
 - The procedural map generation is made with [Perlin Noise](https://en.wikipedia.org/wiki/Perlin_noise).
 - Uses SMFL.
 
-![Screenshot](https://raw.githubusercontent.com/7flying/reactive-wars/master/screenshots/00-gameplay.png)
+![Screenshot](https://github.com/7flying/reactive-wars/raw/master/screenshots/00-gameplay.png)
 
 ## Controls
 
@@ -39,3 +39,11 @@ Here be dragons:
 - Fine-grained collisions. Now it's hardcore.
 - Title screen.
 - ?¿ Memory leak on enemy dispatch routine.
+
+
+## Disclaimer
+
+The player and enemy sprites have been taken from [Little War Game](http://www.littlewargame.com/)
+and belong to their respective authors.
+
+Other sprites are from the internet and belong to their respective authors.
