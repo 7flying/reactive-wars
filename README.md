@@ -1,6 +1,23 @@
 # Reactive Wars
 
-Work in progress.
+Twin stick isometric shooter with procedural map generation developed for
+*Multimedia and videogames* subject. 
+
+- The procedural map generation is made with [Perlin Noise](https://en.wikipedia.org/wiki/Perlin_noise).
+- Uses SMFL.
+
+![Screenshot](https://raw.githubusercontent.com/7flying/reactive-wars/master/screenshots/00-gameplay.png)
+
+## Controls
+
+```./reactive-wars``` will show a small window, press ```SPACE``` to start. You
+can zoom-in/out and resize the window. 
+
+Use ```WASD``` to move the character, and the arrow keys to shoot.
+
+`R` reloads the map.
+
+You have a single life.
 
 ## Install dependencies
 
@@ -14,3 +31,11 @@ sudo add-apt-repository ppa:ubuntu-toolchain-r/test
 sudo apt-get update
 sudo apt-get install libsfml-dev gcc-4.9 g++-4.9
 ```
+
+## Stuff to do / to fix
+
+Here be dragons:
+
+- Fine-grained collisions. Now it's hardcore.
+- Title screen.
+- ?¿ Memory leak on enemy dispatch routine.
